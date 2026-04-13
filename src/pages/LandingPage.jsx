@@ -521,7 +521,7 @@ const LandingPage = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {[
-            { icon: '🛒', title: 'On-Chain Marketplace', text: 'Buy, sell, and trade boats and AI companions with other players securely using your connected wallet.' },
+            { icon: '🛒', title: 'On-Chain Marketplace', text: 'Buy boats, AI companions and guns securely using your connected wallet.' },
             { iconImage: '/images/Icon-Logo.png', iconAlt: 'Doge icon', title: 'AI Companions', text: 'Unlock unique AI companions that chat with you during the race and provide specific combat boosts.' },
             { icon: '💬', title: 'Global Comm Link', text: 'Chat with players around the world in real-time. Show off your loot and strategize with top racers.' },
             { icon: '🔐', title: 'ZK Proof Leaderboards', text: 'Zero-Knowledge proofs ensure every high score is verified without exposing sensitive gameplay data.' }
