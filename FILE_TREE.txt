@@ -1,0 +1,7 @@
+.
+./public
+./public/Build
+./src
+./src/components
+./src/context
+./src/pages
