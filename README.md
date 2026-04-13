@@ -4,7 +4,7 @@
 
 A blockchain-integrated Minecraft-themed endless runner game where players escape through blocky waters, collect diamonds, upgrade boats, and climb the global leaderboard!
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://your-vercel-app.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://dogeescape.vercel.app)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://reactjs.org/)
 [![Unity](https://img.shields.io/badge/Unity-WebGL-black?logo=unity)](https://unity.com/)
@@ -119,8 +119,8 @@ dogeescape-webapp/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/dogeescape.git
-cd dogeescape
+git clone https://github.com/sumit091999/Doge-Escape.git
+cd Doge-Escape
 
 # Install dependencies
 npm install
@@ -189,7 +189,7 @@ VITE_CHAIN_ID=1
 # └── StreamingAssets/
 
 # Enable CORS on R2:
-# AllowedOrigins: ["https://your-vercel-app.vercel.app"]
+# AllowedOrigins: ["https://dogeescape.vercel.app"]
 # AllowedMethods: ["GET", "HEAD"]
 ```
 
@@ -237,6 +237,24 @@ The app has a global theme system powered by `ThemeContext`.
 - The reusable button lives in `src/components/ThemeToggle.jsx`
 - Theme palettes are CSS variables applied through `:root[data-theme="..."]`
 - Existing `bg-doge-*`, `text-doge-*`, and `border-doge-*` utilities are remapped to the active theme
+
+---
+
+## 🐕 Doge & MyDoge Branding
+
+DogeEscape uses Doge-first visual branding across the landing page, feature cards, profile imagery, and marketplace previews.
+
+### Brand Assets
+- **Main Logo**: `public/images/DogeEscape-logo.png`
+- **Feature Icon**: `public/images/Icon-Logo.png`
+- **MyDoge Square Logo**: `public/images/mydoge-assets/Square_Logo.png` (`125x125`)
+
+### MyDoge Partner Guidelines Applied
+- Keep app icons simple and readable at small sizes
+- Avoid text-heavy images and cluttered backgrounds
+- Use strong contrast for catalogue and banner placements
+- Leave clean space for category tags and UI overlays
+- Use friendly Doge-themed visuals without competing with product copy
 
 ---
 
@@ -389,7 +407,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Live Game**: [https://dogeescape.vercel.app](https://your-vercel-app.vercel.app)
+- **Live Game**: [https://dogeescape.vercel.app](https://dogeescape.vercel.app)
 - **Unity Build CDN**: [https://pub-xxxxx.r2.dev](https://your-r2-bucket.r2.dev)
 - **Documentation**: [View Docs](./docs)
 - **Smart Contracts**: [Etherscan](https://etherscan.io/address/0x...)
@@ -399,9 +417,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact & Support
 
 - **Email**: contact@Galacticos.com
-- **Twitter**: [@DogeEscapeGame](https://twitter.com/yourhandle)
+- **Twitter**: [@DogeEscapeGame](https://twitter.com/DogeEscapeGame)
 - **Discord**: [Join Community](https://discord.gg/yourserver)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/dogeescape/issues)
+- **Issues**: [GitHub Issues](https://github.com/sumit091999/Doge-Escape/issues)
 
 ---
 
@@ -415,14 +433,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📊 Stats
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/dogeescape?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/dogeescape?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/dogeescape)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/dogeescape)
-
----
 
 <div align="center">
 
