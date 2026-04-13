@@ -149,14 +149,14 @@ const LandingPage = () => {
               Race through blocky waters, collect diamonds, and escape the chaos!
             </motion.div>
 
-            <motion.div variants={itemVariants} className="landing-partner-strip">
+            {/* <motion.div variants={itemVariants} className="landing-partner-strip">
               <img src="/images/mydoge-assets/Square_Logo.png" alt="DogeEscape square logo" />
               <div>
                 <span>MyDoge-ready visual set</span>
                 <strong>Clean logo, simple cards, readable banners</strong>
               </div>
               <small>Gaming</small>
-            </motion.div>
+            </motion.div> */}
 
             {/* Features list */}
             <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
