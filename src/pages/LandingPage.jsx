@@ -258,7 +258,7 @@ const LandingPage = () => {
           className="grid grid-cols-1 md:grid-cols-3 gap-6 relative"
         >
           {[
-            { icon: '🦊', title: '1. Connect', text: 'Link your MetaMask wallet to access your NFTs, coins, and stats automatically.' },
+            { iconImage: '/images/old.png', title: '1. Connect', text: 'Link your Doge wallet to access your NFTs, coins, and stats automatically.' },
             { icon: '🚤', title: '2. Equip', text: 'Choose your Boat to race and your AI Companion to give you combat buffs, weapons to kill enemies.' },
             { icon: '💎', title: '3. Escape', text: 'Dodge obstacles, kill enemies, grab rewards, and secure the highest score to dominate.' }
           ].map((item, i) => (
@@ -268,8 +268,8 @@ const LandingPage = () => {
               whileHover={{ y: -8, scale: 1.02 }}
               className={`p-6 rounded-2xl shadow-pixel relative cursor-default ${i % 2 === 0 ? 'panel-wood' : 'panel-stone'}`}
             >
-              <div className="w-16 h-16 bg-doge-darker border-2 border-doge-coal rounded-xl flex items-center justify-center text-3xl mb-4 shadow-pixel">
-                {item.icon}
+              <div className="w-16 h-16 bg-doge-darker border-2 border-doge-coal rounded-xl flex items-center justify-center text-3xl mb-4 shadow-pixel overflow-hidden">
+                {item.iconImage ? <img src={item.iconImage} alt={item.title} className="w-full h-full object-cover" /> : item.icon}
               </div>
               <h3 className="text-xl text-doge-gold font-bold mb-2">{item.title}</h3>
               <p className="text-doge-stone text-sm">{item.text}</p>

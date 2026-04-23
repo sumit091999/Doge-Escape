@@ -4,13 +4,6 @@
 
 A blockchain-integrated Minecraft-themed endless runner game where players escape through blocky waters, collect diamonds, upgrade boats, and climb the global leaderboard!
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://dogeescape.vercel.app)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://reactjs.org/)
-[![Unity](https://img.shields.io/badge/Unity-WebGL-black?logo=unity)](https://unity.com/)
-
----
-
 ## 🎮 Features
 
 ### 🎯 Core Gameplay
