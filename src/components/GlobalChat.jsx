@@ -68,13 +68,13 @@ const GlobalChat = () => {
               <h3 className="text-sm font-bold text-doge-gold tracking-widest uppercase">Global Chat</h3>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-doge-iron/60 font-mono">NODE_STATUS:</span>
-                <span className="text-[10px] text-doge-gold font-mono animate-pulse">SYNCED</span>
+                <span className="status-green-text text-[10px] font-mono animate-pulse">SYNCED</span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3 bg-doge-gold/5 px-3 py-1 rounded-full border border-doge-gold/10">
-            <div className="w-1.5 h-1.5 bg-doge-gold rounded-full animate-ping" />
-            <span className="text-[10px] text-doge-gold font-bold tracking-tighter uppercase">Live Network</span>
+            <div className="status-green-dot animate-ping" />
+            <span className="status-green-text text-[10px] font-bold tracking-tighter uppercase">Live Network</span>
           </div>
         </div>
       </div>

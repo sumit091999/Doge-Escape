@@ -136,8 +136,8 @@ const AICompanionChat = () => {
               {selectedCompanion?.name}
             </h3>
             <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-doge-emerald rounded-full animate-pulse shadow-[0_0_5px_#10b981]" />
-                <p className="text-[10px] text-doge-emerald uppercase tracking-widest font-bold">{selectedCompanion?.ability}</p>
+                <span className="status-green-dot" />
+                <p className="status-green-text text-[10px] uppercase tracking-widest font-bold">{selectedCompanion?.ability}</p>
             </div>
           </div>
           <div className="ml-auto flex flex-col items-end">

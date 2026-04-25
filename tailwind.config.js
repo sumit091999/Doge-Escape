@@ -26,6 +26,7 @@ export default {
       },
       fontFamily: {
         pixel: ['"Comic Neue"', 'cursive'],
+        heading: ['"Orbitron"', 'sans-serif'],
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',

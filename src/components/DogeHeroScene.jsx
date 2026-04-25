@@ -1,9 +1,20 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Stars, Sparkles, MeshDistortMaterial, Float, Sky } from '@react-three/drei';
 import * as THREE from 'three';
 
-const WavySea = () => {
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+};
+
+const WavySea = ({ segments = 64 }) => {
   const meshRef = useRef();
   
   useFrame((state) => {
@@ -16,7 +27,7 @@ const WavySea = () => {
 
   return (
     <mesh ref={meshRef} position={[0, -2, 0]}>
-      <planeGeometry args={[100, 100, 64, 64]} />
+      <planeGeometry args={[100, 100, segments, segments]} />
       <MeshDistortMaterial
         color="#0a0a0a"
         emissive="#f0b429"
@@ -30,7 +41,7 @@ const WavySea = () => {
   );
 };
 
-const DigitalSun = () => {
+const DigitalSun = ({ sparkleCount = 50 }) => {
   return (
     <group position={[0, 2, -20]}>
       {/* Sun Core */}
@@ -39,7 +50,7 @@ const DigitalSun = () => {
         <meshBasicMaterial color="#f0b429" transparent opacity={0.8} />
       </mesh>
       {/* Sun Glow */}
-      <Sparkles count={50} scale={15} size={6} speed={0.5} color="#f0b429" />
+      <Sparkles count={sparkleCount} scale={15} size={6} speed={0.5} color="#f0b429" />
     </group>
   );
 };
@@ -81,7 +92,7 @@ const FlyingParticles = ({ count = 200 }) => {
   );
 };
 
-const SceneContent = () => {
+const SceneContent = ({ isMobile }) => {
   const sceneGroup = useRef();
 
   useFrame((state) => {
@@ -94,23 +105,24 @@ const SceneContent = () => {
 
   return (
     <group ref={sceneGroup}>
-      <WavySea />
-      <DigitalSun />
-      <FlyingParticles />
-      <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+      <WavySea segments={isMobile ? 24 : 64} />
+      <DigitalSun sparkleCount={isMobile ? 20 : 50} />
+      <FlyingParticles count={isMobile ? 60 : 200} />
+      <Stars radius={100} depth={50} count={isMobile ? 800 : 3000} factor={4} saturation={0} fade speed={1} />
     </group>
   );
 };
 
 const DogeHeroScene = () => {
+  const isMobile = useIsMobile();
   return (
     <div className="absolute inset-0 pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
+      <Canvas camera={{ position: [0, 0, 10], fov: 60 }} dpr={isMobile ? 1 : [1, 2]}>
         <color attach="background" args={['#050505']} />
         <ambientLight intensity={0.2} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#f0b429" />
         
-        <SceneContent />
+        <SceneContent isMobile={isMobile} />
         
         <fog attach="fog" args={['#050505', 5, 30]} />
       </Canvas>

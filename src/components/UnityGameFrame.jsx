@@ -88,25 +88,43 @@ const UnityGameFrame = ({ isExpanded = false, onToggleExpanded }) => {
           animate={{ opacity: 1 }}
           className="unity-loading-scene absolute inset-0 flex flex-col items-center justify-center bg-doge-coal z-10"
         >
-          <div className="text-center space-y-4">
+          <div className="unity-loader-card">
+            <div className="unity-loader-orbit" aria-hidden="true">
+              <span>💰</span>
+              <span>💎</span>
+              <span>⚡</span>
+            </div>
+
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              className="text-5xl"
+              animate={{ y: [0, -8, 0], rotate: [-2, 2, -2] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              className="unity-loader-doge"
             >
-              🚤
+              <img src="/images/doge_avatar.png" alt="Doge pilot loading" />
             </motion.div>
-            
-            <h3 className="text-lg text-doge-gold">Loading Game...</h3>
-            
-            <div className="w-56 max-w-[70vw] md:w-64">
-              <div className="stat-bar h-4">
+
+            <div className="unity-loader-boat" aria-hidden="true">
+              <span>🚤</span>
+              <i />
+            </div>
+
+            <div className="unity-loader-copy">
+              <p>Booting Doge Escape</p>
+              <h3>Loading Game...</h3>
+            </div>
+
+            <div className="unity-loader-progress">
+              <div className="unity-loader-track">
                 <motion.div
                   animate={{ width: `${loadingProgress}%` }}
-                  className="stat-bar-fill bg-doge-gold"
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className="unity-loader-fill"
                 />
               </div>
-              <p className="text-xs text-doge-iron mt-2">{loadingProgress}%</p>
+              <div className="unity-loader-percent">
+                <span>Syncing blocks</span>
+                <strong>{loadingProgress}%</strong>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -47,6 +47,10 @@ const LeaderboardPage = () => {
 
   const rows = boards[activeBoard].rows;
   const podium = rows.slice(0, 3);
+  const formatPlayerName = (name) => {
+    if (name.length <= 10) return name;
+    return `${name.slice(0, 3)}....${name.slice(-2)}`;
+  };
 
   return (
     <div className="screen-page leaderboard-screen min-h-screen bg-doge-darker p-3 md:p-4 lg:p-6 relative overflow-x-hidden">
@@ -81,7 +85,7 @@ const LeaderboardPage = () => {
               const place = [2, 1, 3][index];
               return (
                 <div key={`${activeBoard}-${player.username}`} className={`podium-player podium-${place}`}>
-                  <div className="podium-medal">🏅 {place}</div>
+                  <div className="podium-medal"> {place}</div>
                   <div className="podium-avatar">
                     {player.avatar?.startsWith('/') ? <img src={player.avatar} alt={player.username} /> : player.avatar}
                   </div>
@@ -98,9 +102,6 @@ const LeaderboardPage = () => {
               <span>Rank</span>
               <span>Player</span>
               <span>Score</span>
-              <span>Wins</span>
-              <span>Level</span>
-              <span>Δ</span>
             </div>
             <div className="rank-table-scroll scrollbar-minecraft">
               {rows.map((player) => (
@@ -108,12 +109,9 @@ const LeaderboardPage = () => {
                   <strong>#{player.rank}</strong>
                   <div>
                     {player.avatar?.startsWith('/') ? <img src={player.avatar} alt={player.username} /> : <span>{player.avatar}</span>}
-                    <b>{player.username}</b>
+                    <b title={player.username}>{formatPlayerName(player.username)}</b>
                   </div>
                   <span>{player.score.toLocaleString()}</span>
-                  <span>{player.wins}</span>
-                  <span>Lv.{player.level}</span>
-                  <span className={player.delta === '▲' ? 'up' : player.delta === '▼' ? 'down' : ''}>{player.delta}</span>
                 </div>
               ))}
             </div>

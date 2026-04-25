@@ -5,11 +5,14 @@ import { useGame } from '../context/GameContext';
 import { useWallet } from '../context/WalletContext';
 import TopBarScene from './TopBarScene';
 import ThemeToggle from './ThemeToggle';
+import AICompanionChat from './AICompanionChat';
 
 const ProfileHeader = ({ showBack }) => {
-  const { coins, avatar, username } = useGame();
+  const { coins, avatar, username, selectedCompanion } = useGame();
   const { disconnect } = useWallet();
   const [showDisconnectModal, setShowDisconnectModal] = useState(false);
+  const [showAiCompanion, setShowAiCompanion] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,10 +35,83 @@ const ProfileHeader = ({ showBack }) => {
       initial={{ y: -42, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="game-nav-shell relative"
+      className="game-nav-shell relative z-50"
     >
       <TopBarScene />
-      <div className="game-nav-brand relative z-10">
+      <div className="game-mobile-header relative z-10 md:hidden">
+        <div className="game-mobile-main-row">
+          <div className="game-mobile-player">
+            {showBack && (
+              <button
+                type="button"
+                onClick={() => navigate('/Home')}
+                className="game-mobile-back"
+                aria-label="Back to Home"
+              >
+                ←
+              </button>
+            )}
+            <button type="button" onClick={() => navigate('/profile')} className="game-nav-avatar game-mobile-avatar" aria-label="Open profile">
+              {avatar?.startsWith('/') ? <img src={avatar} alt="Profile" /> : <span>{avatar}</span>}
+            </button>
+            <button type="button" onClick={() => navigate('/profile')} className="game-mobile-player-name">
+              {username}
+            </button>
+          </div>
+
+          <div className="game-mobile-top-actions">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="game-mobile-menu-button"
+              aria-label="Toggle menu"
+            >
+              <div className="flex flex-col items-center justify-center gap-[4px]">
+                <span className={`block w-5 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[6px]' : ''}`} />
+                <span className={`block w-5 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`block w-5 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[6px]' : ''}`} />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowDisconnectModal(true)}
+              className="game-nav-disconnect game-mobile-disconnect"
+              aria-label="Disconnect wallet"
+              title="Disconnect wallet"
+            >
+              <span className="disconnect-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M9 5H5v14h4" />
+                  <path d="M14 8l4 4-4 4" />
+                  <path d="M18 12H8" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div className="game-mobile-info-row">
+          <ThemeToggle compact />
+          <button
+            type="button"
+            onClick={() => setShowAiCompanion(true)}
+            className="game-nav-ai-button"
+            aria-label="Open AI companion"
+            title="AI Companion"
+          >
+            <span>{selectedCompanion?.image || '🤖'}</span>
+          </button>
+          <div className="game-nav-currency game-mobile-currency">
+            <span>💰</span>
+            <strong>{coins.toLocaleString()}</strong>
+          </div>
+          <div className="game-nav-currency game-mobile-currency">
+            <span>💎</span>
+            <strong>42</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="game-nav-brand relative z-10 hidden md:flex">
         {showBack && (
           <button type="button" onClick={() => navigate('/Home')} className="game-nav-back">
             ←
@@ -51,7 +127,8 @@ const ProfileHeader = ({ showBack }) => {
         </button>
       </div>
 
-      <nav className="game-nav-links relative z-10" aria-label="Game navigation">
+      {/* Desktop Navigation Links */}
+      <nav className="game-nav-links relative z-10 hidden md:flex" aria-label="Game navigation">
         {navItems.map((item) => (
           <button
             key={item.path}
@@ -65,8 +142,17 @@ const ProfileHeader = ({ showBack }) => {
         ))}
       </nav>
 
-      <div className="game-nav-actions relative z-10">
+      <div className="game-nav-actions relative z-10 hidden md:flex">
         <ThemeToggle compact />
+        <button
+          type="button"
+          onClick={() => setShowAiCompanion(true)}
+          className="game-nav-ai-button"
+          aria-label="Open AI companion"
+          title="AI Companion"
+        >
+          <span>{selectedCompanion?.image || '🤖'}</span>
+        </button>
         <div className="game-nav-currency">
           <span>💰</span>
           <strong>{coins.toLocaleString()}</strong>
@@ -75,12 +161,97 @@ const ProfileHeader = ({ showBack }) => {
           <span>💎</span>
           <strong>42</strong>
         </div>
-        <button type="button" onClick={() => setShowDisconnectModal(true)} className="game-nav-disconnect">
-          Disconnect
+      </div>
+
+      <div className="game-nav-disconnect-slot relative z-10 hidden md:flex">
+        <button
+          type="button"
+          onClick={() => setShowDisconnectModal(true)}
+          className="game-nav-disconnect"
+          aria-label="Disconnect wallet"
+          title="Disconnect wallet"
+        >
+          <span className="disconnect-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M9 5H5v14h4" />
+              <path d="M14 8l4 4-4 4" />
+              <path d="M18 12H8" />
+            </svg>
+          </span>
         </button>
       </div>
 
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 w-full bg-doge-darker/95 backdrop-blur-md border-b-2 border-doge-coal/60 shadow-pixel-lg z-40 md:hidden"
+          >
+            <div className="flex flex-col p-4 gap-2 max-w-5xl mx-auto">
+              {navItems.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => {
+                    navigate(item.path);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-3 p-3 rounded-lg border border-transparent transition-all duration-200 ${
+                    location.pathname === item.path 
+                      ? 'bg-doge-gold/20 border-doge-gold/50 text-doge-gold' 
+                      : 'text-doge-iron hover:bg-doge-gold/10 hover:text-doge-gold'
+                  }`}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="font-heading text-sm">{item.label}</span>
+                </button>
+              ))}
+              
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showAiCompanion && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-3 py-5 sm:px-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowAiCompanion(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.94, y: 12, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+              className="ai-companion-modal"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="ai-companion-modal-bar">
+                <div>
+                  <p>AI Companion</p>
+                  <strong>Open comms from anywhere</strong>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAiCompanion(false)}
+                  aria-label="Close AI companion"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="ai-companion-modal-body">
+                <AICompanionChat />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
         {showDisconnectModal && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"

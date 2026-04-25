@@ -11,31 +11,21 @@ export const useWallet = () => {
 };
 
 export const WalletProvider = ({ children }) => {
-  const [account, setAccount] = useState(null);
+  const [account, setAccount] = useState(() => {
+    // Restore saved address immediately so ProtectedRoute doesn't redirect
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('doge_wallet_address') || null;
+    }
+    return null;
+  });
   const [isConnecting, setIsConnecting] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  // Check if wallet is already connected on mount
+  // On mount, just trust localStorage — don't call window.doge.connect()
+  // which opens the wallet popup. connect() is only called on explicit user action.
   useEffect(() => {
-    checkConnection();
+    setIsInitializing(false);
   }, []);
-
-  const checkConnection = async () => {
-    if (typeof window !== 'undefined' && window.doge) {
-      try {
-        const res = await window.doge.connect();
-        if (res && res.address) {
-          setAccount(res.address);
-        }
-      } catch (error) {
-        console.error('Error checking connection:', error);
-      } finally {
-        setIsInitializing(false);
-      }
-    } else {
-      setIsInitializing(false);
-    }
-  };
 
   const connectWallet = async () => {
     if (typeof window === 'undefined' || !window.doge) {
@@ -51,6 +41,7 @@ export const WalletProvider = ({ children }) => {
       const res = await window.doge.connect();
       if (res && res.address) {
         setAccount(res.address);
+        localStorage.setItem('doge_wallet_address', res.address);
         return res.address;
       }
     } catch (error) {
@@ -63,6 +54,7 @@ export const WalletProvider = ({ children }) => {
 
   const disconnect = () => {
     setAccount(null);
+    localStorage.removeItem('doge_wallet_address');
   };
 
   const getShortAddress = (address) => {

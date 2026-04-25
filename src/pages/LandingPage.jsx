@@ -18,6 +18,7 @@ const LandingPage = () => {
   const { connectWallet, isConnecting } = useWallet();
   const { leaderboard, boats, companions, guns } = useGame();
   const [particles, setParticles] = useState([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const marketplacePreviewItems = [
     ...boats.slice(0, 2).map((item) => ({ ...item, type: 'Boat', stat: `${item.speed} Speed` })),
     ...guns.slice(0, 1).map((item) => ({ ...item, type: 'Weapon', stat: `${item.damage} Damage` })),
@@ -93,10 +94,79 @@ const LandingPage = () => {
   return (
     <div className="w-full min-h-screen bg-doge-darker overflow-x-hidden text-white font-pixel pb-0">
       <ThemeToggle className="landing-theme-toggle" />
+
       {/* 1. Hero Section */}
-      <div className="py-12 px-4 bg-doge-coal bg-opacity-40 border-b-2 border-doge-dark shadow-inset relative mt-10 overflow-hidden">
+      <div className="pb-8 md:pb-12 px-4 bg-doge-coal bg-opacity-40 border-b-2 border-doge-dark shadow-inset relative overflow-hidden">
         {/* Three.js 3D Background */}
         <DogeHeroScene />
+
+        {/* Landing Nav Bar */}
+        <nav className="relative z-20 w-full pt-3 pb-2">
+          <div className="max-w-5xl mx-auto px-3 py-2.5">
+            {/* Desktop: inline buttons */}
+            <div className="hidden md:flex items-center justify-center gap-4">
+              {[
+                { label: 'How to Play', target: 'how-to-play' },
+                { label: 'Marketplace', target: 'marketplace' },
+                { label: 'Companions', target: 'companions' },
+                { label: 'Leaderboard', target: 'leaderboard' },
+              ].map((item) => (
+                <button
+                  key={item.target}
+                  onClick={() => document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' })}
+                  className="font-heading text-xs md:text-sm text-doge-iron hover:text-doge-gold px-4 py-2 rounded-lg border border-transparent hover:border-doge-gold/40 hover:bg-doge-gold/10 transition-all duration-200 whitespace-nowrap"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile: hamburger icon */}
+            <div className="flex md:hidden items-center justify-start">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="w-10 h-10 rounded-full border-2 border-doge-gold/50 bg-doge-darker/80 flex items-center justify-center hover:border-doge-gold transition-colors duration-200"
+                aria-label="Toggle menu"
+              >
+                <div className="flex flex-col items-center justify-center gap-[3px]">
+                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
+                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+                </div>
+              </button>
+            </div>
+
+            {/* Mobile dropdown */}
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="md:hidden flex flex-col gap-1 pt-3 pb-1"
+              >
+                {[
+                  { label: 'How to Play', target: 'how-to-play' },
+                  { label: 'Marketplace', target: 'marketplace' },
+                  { label: 'Companions', target: 'companions' },
+                  { label: 'Leaderboard', target: 'leaderboard' },
+                ].map((item) => (
+                  <button
+                    key={item.target}
+                    onClick={() => {
+                      document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' });
+                      setMobileMenuOpen(false);
+                    }}
+                    className="font-heading text-sm text-doge-iron hover:text-doge-gold py-2.5 px-4 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 text-left border border-transparent hover:border-doge-gold/30"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </div>
+        </nav>
+
+        <div className="landing-nav-divider relative z-20" aria-hidden="true" />
 
         {/* Animated Sparkles */}
         <div className="absolute top-10 left-10 torch"></div>
@@ -105,7 +175,7 @@ const LandingPage = () => {
         <div className="absolute bottom-10 right-1/4 torch"></div>
 
         {/* Main Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-6 md:gap-12">
           
           {/* Left Column: Text & CTA */}
           <motion.div
@@ -182,7 +252,7 @@ const LandingPage = () => {
               <button
                 onClick={handleConnect}
                 disabled={isConnecting}
-                className="btn-primary flex-1 shadow-pixel flex items-center justify-center gap-2 text-sm sm:text-base group"
+                className="btn-primary connect-wallet-bright flex-1 shadow-pixel flex items-center justify-center gap-2 text-sm sm:text-base group"
               >
                 {isConnecting ? (
                   <span className="animate-pulse">Connecting...</span>
@@ -220,14 +290,14 @@ const LandingPage = () => {
             initial={{ x: 50, opacity: 0, rotate: 2 }}
             animate={{ x: 0, opacity: 1, rotate: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
-            className="landing-hero-logo-wrap w-full md:w-1/2 flex justify-center mt-10 md:mt-0"
+            className="landing-hero-logo-wrap w-full md:w-1/2 flex justify-center mt-0 md:mt-0"
           >
             <motion.img 
               animate={{ y: [0, -8, 0], rotate: [-1, 1, -1] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               src="/images/DogeEscape-logo.png" 
               alt="DogeEscape logo" 
-              className="landing-hero-logo w-full max-w-md md:max-w-xl h-auto"
+              className="landing-hero-logo w-full max-w-[280px] sm:max-w-md md:max-w-xl h-auto"
             />
           </motion.div>
         </div>
@@ -235,7 +305,7 @@ const LandingPage = () => {
       {/* End Hero Section */}
 
       {/* 2. How to Play Section */}
-      <div className="pt-7 pb-10 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden">
+      <div id="how-to-play" className="pt-6 pb-8 md:pt-7 md:pb-10 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
         {/* 3D Background */}
         <HowToPlayScene />
         
@@ -246,7 +316,7 @@ const LandingPage = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel">How to Play? 🎮</h2>
+          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">How to Play? 🎮</h2>
           <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Fast, simple, and rewarding. Get into the race and claim your loot.</p>
         </motion.div>
 
@@ -279,7 +349,7 @@ const LandingPage = () => {
       </div>
 
       {/* Marketplace Preview Section */}
-      <div className="pt-12 pb-12 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden">
+      <div id="marketplace" className="pt-12 pb-12 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
         <MarketTreasuryScene />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -289,7 +359,7 @@ const LandingPage = () => {
           className="text-center mb-10 relative z-10"
         >
           <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">Marketplace Preview</p>
-          <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4">Gear Up Before The Run</h2>
+          <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Gear Up Before The Run</h2>
           <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Preview boats and weapons built for speed, survival, and clean leaderboard climbs.</p>
         </motion.div>
 
@@ -328,7 +398,7 @@ const LandingPage = () => {
       </div>
 
       {/* AI Companion Showcase Section */}
-      <div className="pt-12 pb-14 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-hidden">
+      <div id="companions" className="pt-12 pb-14 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-hidden scroll-mt-16">
         <CompanionShowcaseScene />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
@@ -339,7 +409,7 @@ const LandingPage = () => {
             className="text-center mb-10"
           >
             <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">AI Companion Showcase</p>
-            <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4">Pick Your Ride-Or-Die Buddy</h2>
+            <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Choose Your AI Companion</h2>
             <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Each companion brings a different edge into the chaos, from combat pressure to clutch movement.</p>
           </motion.div>
 
@@ -379,11 +449,11 @@ const LandingPage = () => {
       </div>
 
       {/* Gameplay Trailer Section */}
-      <div id="gameplay-preview" className="pt-12 pb-8 px-4 w-full relative overflow-hidden">
+      <div id="gameplay-preview" className="pt-8 pb-6 md:pt-12 md:pb-8 px-4 w-full relative overflow-hidden">
         <GamePreviewScene />
         <div className="text-center mb-8 relative z-10 max-w-5xl mx-auto">
           <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">Gameplay Preview</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3">
+          <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3 font-heading">
             See It <span className="text-doge-gold bg-doge-coal/60 border-2 border-doge-dark px-4 py-1 rounded-xl">In Action</span>
           </h2>
         </div>
@@ -408,7 +478,7 @@ const LandingPage = () => {
       </div>
 
       {/* 3. Top Scorers Section */}
-      <div className="pt-20 pb-28 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-x-hidden overflow-y-visible">
+      <div id="leaderboard" className="pt-10 pb-14 md:pt-20 md:pb-28 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-x-hidden overflow-y-visible scroll-mt-16">
         {/* 3D Background */}
         <LeaderboardScene compact />
         
@@ -420,7 +490,7 @@ const LandingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel">🏆 Weekly Topers</h2>
+            <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">🏆 Weekly Toppers</h2>
             <p className="text-doge-iron">The legendary Doges dominating the blocky waters.</p>
           </motion.div>
 
@@ -509,7 +579,7 @@ const LandingPage = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel">Game Features 🚀</h2>
+          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">Game Features 🚀</h2>
           <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Fully integrated with the Doge Blockchain for true ownership.</p>
         </motion.div>
 
@@ -549,7 +619,7 @@ const LandingPage = () => {
       </div>
 
       {/* 5. Final CTA */}
-      <div className="pt-24 pb-24 px-4 text-center relative overflow-hidden">
+      <div className="pt-14 pb-14 md:pt-24 md:pb-24 px-4 text-center relative overflow-hidden">
         {/* 3D Background */}
         <WarpSpeedScene />
         
@@ -559,12 +629,12 @@ const LandingPage = () => {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto space-y-8 relative z-10"
         >
-          <h2 className="text-4xl md:text-5xl text-doge-gold font-bold text-shadow-pixel">Ready to Escape?</h2>
-          <p className="text-doge-iron md:text-lg">Your boat is waiting. The Doges are coming. Connect your wallet now.</p>
+          <h2 className="text-4xl md:text-5xl text-doge-gold font-bold text-shadow-pixel font-heading">Ready to Escape?</h2>
+          <p className="text-doge-iron md:text-lg">Your boat is ready. Connect your wallet and start the next run.</p>
           <button
             onClick={handleConnect}
             disabled={isConnecting}
-            className="btn-primary cta-play-now text-lg md:text-2xl px-10 py-5 animate-glow inline-block"
+            className="btn-primary connect-wallet-bright cta-play-now text-lg md:text-2xl px-10 py-5 animate-glow inline-block"
           >
             <span className="cta-spark cta-spark-one"></span>
             <span className="cta-spark cta-spark-two"></span>
@@ -589,11 +659,45 @@ const LandingPage = () => {
       </div>
 
       {/* Footer */}
-      <div className="py-8 w-full px-4 text-center border-t-2 border-doge-coal bg-[#0a0805]">
-        <p className="text-xs sm:text-sm md:text-lg text-doge-stone">
-          Powered by DogeOS
-        </p>
-      </div>
+      <footer className="w-full bg-[#0a0805] relative">
+        {/* Hazard Stripe */}
+        <div className="w-full h-3 overflow-hidden"
+          style={{
+            background: 'repeating-linear-gradient(-45deg, #f0b429, #f0b429 10px, #1a1510 10px, #1a1510 20px)',
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Left: Logo + Branding */}
+          <div className="flex items-center gap-3">
+            <img src="/images/DogeEscape-logo.png" alt="DogeEscape" className="w-8 h-8 object-contain" />
+            <span className="font-heading text-sm md:text-base text-doge-gold tracking-wider">DOGE ESCAPE</span>
+          </div>
+
+          {/* Center: Nav Links */}
+          <div className="flex items-center gap-4 sm:gap-8">
+            {[
+              { label: 'HOME', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+              { label: 'LEADERBOARD', action: () => document.getElementById('leaderboard')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'MARKETPLACE', action: () => document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'COMPANIONS', action: () => document.getElementById('companions')?.scrollIntoView({ behavior: 'smooth' }) },
+            ].map((item) => (
+              <button
+                key={item.label}
+                onClick={item.action}
+                className="font-heading text-[10px] sm:text-xs text-doge-stone hover:text-doge-gold tracking-wider transition-colors duration-200"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Right: Copyright */}
+          <p className="text-[10px] sm:text-xs text-doge-stone/60">
+            © 2026 Doge Escape. Powered by <span className="text-doge-gold/80">DogeOS</span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

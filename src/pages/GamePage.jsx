@@ -27,7 +27,7 @@ const GamePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className={`flex-1 min-h-0 relative z-30 ${
+          className={`flex-1 min-h-0 relative z-10 ${
             isGameExpanded
               ? 'game-main-stage flex'
               : 'flex flex-col lg:grid lg:grid-cols-[260px_1fr_260px] gap-3 mt-3 md:mt-4 pb-6 lg:pb-0'
