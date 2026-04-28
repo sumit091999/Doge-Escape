@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import ChatGlassScene from './ChatGlassScene';
+import ItemVisual from './ItemVisual';
 
 const AICompanionChat = () => {
   const navigate = useNavigate();
@@ -129,7 +130,7 @@ const AICompanionChat = () => {
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="text-4xl drop-shadow-[0_0_10px_rgba(240,180,41,0.5)]"
           >
-            {selectedCompanion?.image}
+            <ItemVisual item={selectedCompanion} imageClassName="h-10 w-10 object-contain" />
           </motion.div>
           <div>
             <h3 className="text-lg font-bold text-doge-gold tracking-tight">

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ItemVisual from './ItemVisual';
 import { useGame } from '../context/GameContext';
 
 const ItemDetailsModal = ({ item, itemType, onClose }) => {
@@ -150,7 +151,7 @@ const ItemDetailsModal = ({ item, itemType, onClose }) => {
         <div className="flex justify-between items-start mb-6">
           <div className="flex items-center gap-4">
             <div className="hotbar-slot w-20 h-20 text-5xl">
-              {item.image}
+              <ItemVisual item={item} imageClassName="h-16 w-16 object-contain" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-doge-gold text-shadow-pixel">

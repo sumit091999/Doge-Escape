@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 
 const themes = [
   {
@@ -6,18 +6,6 @@ const themes = [
     name: 'DogeOS Classic',
     shortName: 'Classic',
     icon: '☀️',
-  },
-  {
-    id: 'such-wow-arcade',
-    name: 'Such Wow Arcade',
-    shortName: 'Arcade',
-    icon: '🌙',
-  },
-  {
-    id: 'doge-network-state',
-    name: 'Doge Network State',
-    shortName: 'Network',
-    icon: '✨',
   },
 ];
 
@@ -34,33 +22,15 @@ export const useTheme = () => {
   return context;
 };
 
-const getInitialTheme = () => {
-  if (typeof window === 'undefined') {
-    return defaultTheme.id;
-  }
-
-  const savedTheme = window.localStorage.getItem(STORAGE_KEY);
-  return themes.some((theme) => theme.id === savedTheme) ? savedTheme : defaultTheme.id;
-};
-
 export const ThemeProvider = ({ children }) => {
-  const [themeId, setThemeId] = useState(getInitialTheme);
-
-  const activeTheme = useMemo(
-    () => themes.find((theme) => theme.id === themeId) || defaultTheme,
-    [themeId]
-  );
+  const activeTheme = themes[0];
 
   useEffect(() => {
     document.documentElement.dataset.theme = activeTheme.id;
-    window.localStorage.setItem(STORAGE_KEY, activeTheme.id);
   }, [activeTheme.id]);
 
   const nextTheme = useCallback(() => {
-    setThemeId((currentThemeId) => {
-      const currentIndex = themes.findIndex((theme) => theme.id === currentThemeId);
-      return themes[(currentIndex + 1) % themes.length].id;
-    });
+    // No-op as there is only one theme
   }, []);
 
   const value = useMemo(
@@ -68,7 +38,7 @@ export const ThemeProvider = ({ children }) => {
       themes,
       activeTheme,
       nextTheme,
-      setThemeId,
+      setThemeId: () => {}, // No-op
     }),
     [activeTheme, nextTheme]
   );

@@ -6,6 +6,7 @@ import { useWallet } from '../context/WalletContext';
 import ItemDetailsModal from '../components/ItemDetailsModal';
 import PlayerHubScene from '../components/PlayerHubScene';
 import { AnimatePresence } from 'framer-motion';
+import ItemVisual from '../components/ItemVisual';
 
 const ProfilePage = () => {
   const {
@@ -40,9 +41,9 @@ const ProfilePage = () => {
   };
 
   const equippedItems = [
-    { title: selectedBoat?.name || 'None', subtitle: 'Boat', icon: selectedBoat?.image || '🚤' },
-    { title: selectedCompanion?.name || 'None', subtitle: 'Companion', icon: selectedCompanion?.image || '🧔' },
-    { title: selectedGun?.name || 'None', subtitle: 'Weapon', icon: selectedGun?.image || '🔫' },
+    { title: selectedBoat?.name || 'None', subtitle: 'Boat', visual: selectedBoat || '🚤' },
+    { title: selectedCompanion?.name || 'None', subtitle: 'Companion', visual: selectedCompanion || '🧔' },
+    { title: selectedGun?.name || 'None', subtitle: 'Weapon', visual: selectedGun || '🔫' },
   ];
 
   const ownedBoats = boats.filter(b => b.owned);
@@ -159,7 +160,7 @@ const ProfilePage = () => {
             <div className="equipped-grid">
               {equippedItems.map((item) => (
                 <div key={item.title} className="equipped-tile">
-                  <span>{item.icon}</span>
+                  <ItemVisual item={item.visual} imageClassName="h-10 w-10 object-contain" />
                   <div>
                     <strong>{item.title}</strong>
                     <p>{item.subtitle}</p>
@@ -273,7 +274,7 @@ const InventoryItemCard = ({ item, type, onClick }) => (
     className="panel-dark p-4 flex items-center gap-4 cursor-pointer border-2 border-transparent hover:border-doge-gold/40 transition-all shadow-pixel"
   >
     <div className="hotbar-slot w-14 h-14 text-4xl shrink-0">
-      {item.image}
+      <ItemVisual item={item} imageClassName="h-12 w-12 object-contain" />
     </div>
     <div className="min-w-0">
       <h3 className="text-sm font-bold text-doge-gold truncate">{item.name}</h3>

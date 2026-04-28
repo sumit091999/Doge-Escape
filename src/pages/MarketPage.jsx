@@ -4,6 +4,7 @@ import { useGame } from '../context/GameContext';
 import ProfileHeader from '../components/ProfileHeader';
 import ItemDetailsModal from '../components/ItemDetailsModal';
 import MarketTreasuryScene from '../components/MarketTreasuryScene';
+import ItemVisual from '../components/ItemVisual';
 
 const MarketCard = ({ item, type, onBuy, onRent, userCoins, onClick }) => {
   const isOwned = item.owned;
@@ -18,7 +19,9 @@ const MarketCard = ({ item, type, onBuy, onRent, userCoins, onClick }) => {
       <div className="absolute top-2 right-2 text-doge-iron opacity-0 group-hover:opacity-100 transition-opacity">
         ⓘ
       </div>
-      <div className="text-5xl mb-2 drop-shadow-lg">{item.image}</div>
+      <div className="text-5xl mb-2 drop-shadow-lg h-16 w-16 flex items-center justify-center">
+        <ItemVisual item={item} imageClassName="h-16 w-16 object-contain" />
+      </div>
       <h3 className="text-lg font-bold text-doge-gold leading-tight">{item.name}</h3>
       
       {/* Stats */}

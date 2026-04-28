@@ -8,9 +8,9 @@ import HowToPlayScene from '../components/HowToPlayScene';
 import LeaderboardScene from '../components/LeaderboardScene';
 import FeaturesScene from '../components/FeaturesScene';
 import WarpSpeedScene from '../components/WarpSpeedScene';
-import ThemeToggle from '../components/ThemeToggle';
 import MarketTreasuryScene from '../components/MarketTreasuryScene';
 import { CompanionShowcaseScene, GamePreviewScene } from '../components/LandingPreviewScenes';
+import ItemVisual from '../components/ItemVisual';
 
 
 const LandingPage = () => {
@@ -93,7 +93,7 @@ const LandingPage = () => {
 
   return (
     <div className="w-full min-h-screen bg-doge-darker overflow-x-hidden text-white font-pixel pb-0">
-      <ThemeToggle className="landing-theme-toggle" />
+
 
       {/* 1. Hero Section */}
       <div className="pb-8 md:pb-12 px-4 bg-doge-coal bg-opacity-40 border-b-2 border-doge-dark shadow-inset relative overflow-hidden">
@@ -102,38 +102,58 @@ const LandingPage = () => {
 
         {/* Landing Nav Bar */}
         <nav className="relative z-20 w-full pt-3 pb-2">
-          <div className="max-w-5xl mx-auto px-3 py-2.5">
-            {/* Desktop: inline buttons */}
-            <div className="hidden md:flex items-center justify-center gap-4">
-              {[
-                { label: 'How to Play', target: 'how-to-play' },
-                { label: 'Marketplace', target: 'marketplace' },
-                { label: 'Companions', target: 'companions' },
-                { label: 'Leaderboard', target: 'leaderboard' },
-              ].map((item) => (
-                <button
-                  key={item.target}
-                  onClick={() => document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' })}
-                  className="font-heading text-xs md:text-sm text-doge-iron hover:text-doge-gold px-4 py-2 rounded-lg border border-transparent hover:border-doge-gold/40 hover:bg-doge-gold/10 transition-all duration-200 whitespace-nowrap"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Mobile: hamburger icon */}
-            <div className="flex md:hidden items-center justify-start">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="w-10 h-10 rounded-full border-2 border-doge-gold/50 bg-doge-darker/80 flex items-center justify-center hover:border-doge-gold transition-colors duration-200"
-                aria-label="Toggle menu"
-              >
-                <div className="flex flex-col items-center justify-center gap-[3px]">
-                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
-                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                  <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 py-2.5">
+            <div className="relative flex items-center w-full">
+              {/* Logo Left - Always visible */}
+              <div className="flex items-center gap-3 shrink-0">
+                <img src="/images/DogeEscape-logo.png" alt="DogeEscape" className="w-11 h-11 object-contain" />
+                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-full border border-doge-gold/20 bg-[#1a1510]/60 backdrop-blur-md">
+                  <div className="relative flex items-center justify-center w-3 h-3">
+                    <div className="w-full h-full rounded-full bg-[#3e5a2a] opacity-50" />
+                    <div className="absolute w-1.5 h-1.5 rounded-full bg-[#64b03a] shadow-[0_0_8px_#64b03a]" />
+                  </div>
+                  <span className="text-[9px] font-bold text-doge-gold tracking-widest whitespace-nowrap uppercase leading-none mt-0.5">
+                    POWERED BY DogeOS
+                  </span>
                 </div>
-              </button>
+              </div>
+
+              {/* Desktop: Centered inline buttons */}
+              <div className="hidden lg:flex flex-1 items-center justify-center z-30">
+                <div className="flex items-center gap-3 xl:gap-8 pointer-events-auto">
+                  {[
+                    { label: 'How to Play', target: 'how-to-play' },
+                    { label: 'Marketplace', target: 'marketplace' },
+                    { label: 'Companions', target: 'companions' },
+                    { label: 'Leaderboard', target: 'leaderboard' },
+                  ].map((item) => (
+                    <motion.button
+                      key={item.target}
+                      whileHover={{ scale: 1.1, color: '#f0b429', textShadow: '0 0 15px rgba(240, 180, 41, 0.6)' }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' })}
+                      className="font-pixel text-[11px] xl:text-sm text-doge-iron px-2 xl:px-4 py-2 transition-all duration-200 whitespace-nowrap tracking-widest uppercase cursor-pointer"
+                    >
+                      {item.label}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile: hamburger icon right */}
+              <div className="flex lg:hidden items-center ml-auto">
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="w-10 h-10 rounded-full border-2 border-doge-gold/50 bg-doge-darker/80 flex items-center justify-center hover:border-doge-gold transition-colors duration-200"
+                  aria-label="Toggle menu"
+                >
+                  <div className="flex flex-col items-center justify-center gap-[3px]">
+                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
+                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+                  </div>
+                </button>
+              </div>
             </div>
 
             {/* Mobile dropdown */}
@@ -142,7 +162,7 @@ const LandingPage = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
-                className="md:hidden flex flex-col gap-1 pt-3 pb-1"
+                className="lg:hidden flex flex-col gap-1 pt-3 pb-1"
               >
                 {[
                   { label: 'How to Play', target: 'how-to-play' },
@@ -156,7 +176,7 @@ const LandingPage = () => {
                       document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' });
                       setMobileMenuOpen(false);
                     }}
-                    className="font-heading text-sm text-doge-iron hover:text-doge-gold py-2.5 px-4 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 text-left border border-transparent hover:border-doge-gold/30"
+                    className="font-heading text-base text-doge-iron hover:text-doge-gold py-3 px-5 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 text-left border border-transparent hover:border-doge-gold/30 uppercase tracking-wider"
                   >
                     {item.label}
                   </button>
@@ -176,7 +196,7 @@ const LandingPage = () => {
 
         {/* Main Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-6 md:gap-12">
-          
+
           {/* Left Column: Text & CTA */}
           <motion.div
             variants={containerVariants}
@@ -199,24 +219,24 @@ const LandingPage = () => {
 
             {/* Icons Row */}
             <motion.div variants={itemVariants} className="flex gap-4">
-               {['🚤', '💎', '⚡'].map((emoji, i) => (
-                 <motion.div 
-                   key={i} 
-                   variants={floatingVariants}
-                   animate="animate"
-                   className="w-14 h-14 panel-stone flex items-center justify-center text-3xl rounded-xl shadow-pixel"
-                 >
-                   <span>{emoji}</span>
-                 </motion.div>
-               ))}
+              {['🚤', '💎', '⚡'].map((emoji, i) => (
+                <motion.div
+                  key={i}
+                  variants={floatingVariants}
+                  animate="animate"
+                  className="w-14 h-14 panel-stone flex items-center justify-center text-3xl rounded-xl shadow-pixel"
+                >
+                  <span>{emoji}</span>
+                </motion.div>
+              ))}
             </motion.div>
 
             {/* Tagline */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
-              className="panel-dark p-4 rounded-xl border-2 border-doge-coal shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] inline-block text-doge-iron text-sm md:text-base font-bold w-full md:w-auto"
+              className="dogeos-copy panel-dark p-4 rounded-xl border-2 border-doge-coal shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] inline-block text-doge-iron text-sm md:text-base font-bold w-full md:w-auto font-pixel"
             >
-              Race through blocky waters, collect diamonds, and escape the chaos!
+              Race through blocky waters, collect diamonds, and escape the chaos on DogeOS.
             </motion.div>
 
             {/* <motion.div variants={itemVariants} className="landing-partner-strip">
@@ -237,10 +257,10 @@ const LandingPage = () => {
                 "On-Chain Global Chat",
                 "ZK Proof Leaderboard"
               ].map((text, i) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ scale: 1.05, x: 5 }}
-                  className="panel-wood py-2 px-4 rounded-full border-2 border-[#1a1510] flex items-center gap-2 shadow-pixel text-xs sm:text-sm text-doge-stone font-bold hover:border-doge-gold transition-colors cursor-default"
+                  className="dogeos-chip panel-wood py-2 px-4 rounded-full border-2 border-[#1a1510] flex items-center gap-2 shadow-pixel text-[10px] sm:text-xs text-doge-stone font-pixel hover:border-doge-gold transition-colors cursor-default tracking-wide"
                 >
                   <span className="text-doge-emerald drop-shadow-md">✔️</span> {text}
                 </motion.div>
@@ -252,30 +272,30 @@ const LandingPage = () => {
               <button
                 onClick={handleConnect}
                 disabled={isConnecting}
-                className="btn-primary connect-wallet-bright flex-1 shadow-pixel flex items-center justify-center gap-2 text-sm sm:text-base group"
+                className="btn-primary connect-wallet-bright flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-base font-pixel group whitespace-nowrap py-3 sm:py-4"
               >
                 {isConnecting ? (
                   <span className="animate-pulse">Connecting...</span>
                 ) : (
                   <>
-                    <motion.span 
-                      whileHover={{ scale: 1.2, rotate: 360 }} 
-                      transition={{ duration: 0.5 }} 
+                    <motion.span
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={{ duration: 0.5 }}
                       className="inline-block"
                     >
                       🎮
-                    </motion.span> 
-                    Connect Wallet & Play
+                    </motion.span>
+                    Connect Wallet
                   </>
                 )}
               </button>
-              <button 
-                className="btn-secondary flex-1 shadow-pixel flex items-center justify-center gap-2 text-sm sm:text-base group"
+              <button
+                className="btn-secondary flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm font-pixel group"
                 onClick={() => document.getElementById('gameplay-preview')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <span>Watch Trailer</span>
-                <motion.span 
-                  animate={{ x: [0, 5, 0] }} 
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
                   transition={{ repeat: Infinity, duration: 1 }}
                   className="inline-block"
                 >
@@ -292,11 +312,11 @@ const LandingPage = () => {
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
             className="landing-hero-logo-wrap w-full md:w-1/2 flex justify-center mt-0 md:mt-0"
           >
-            <motion.img 
+            <motion.img
               animate={{ y: [0, -8, 0], rotate: [-1, 1, -1] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              src="/images/DogeEscape-logo.png" 
-              alt="DogeEscape logo" 
+              src="/images/DogeEscape-logo.png"
+              alt="DogeEscape logo"
               className="landing-hero-logo w-full max-w-[280px] sm:max-w-md md:max-w-xl h-auto"
             />
           </motion.div>
@@ -308,7 +328,7 @@ const LandingPage = () => {
       <div id="how-to-play" className="pt-6 pb-8 md:pt-7 md:pb-10 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
         {/* 3D Background */}
         <HowToPlayScene />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -317,7 +337,7 @@ const LandingPage = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">How to Play? 🎮</h2>
-          <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Fast, simple, and rewarding. Get into the race and claim your loot.</p>
+          <p className="dogeos-copy text-doge-iron md:text-lg max-w-2xl mx-auto font-pixel">Fast, simple, and rewarding. Get into the race and claim your loot.</p>
         </motion.div>
 
         <motion.div
@@ -332,7 +352,7 @@ const LandingPage = () => {
             { icon: '🚤', title: '2. Equip', text: 'Choose your Boat to race and your AI Companion to give you combat buffs, weapons to kill enemies.' },
             { icon: '💎', title: '3. Escape', text: 'Dodge obstacles, kill enemies, grab rewards, and secure the highest score to dominate.' }
           ].map((item, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={itemVariants}
               whileHover={{ y: -8, scale: 1.02 }}
@@ -358,7 +378,7 @@ const LandingPage = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 relative z-10"
         >
-          <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">Marketplace Preview</p>
+          <p className="dogeos-label mx-auto mb-2">DogeOS Marketplace</p>
           <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Gear Up Before The Run</h2>
           <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Preview boats and weapons built for speed, survival, and clean leaderboard climbs.</p>
         </motion.div>
@@ -379,7 +399,7 @@ const LandingPage = () => {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="w-16 h-16 bg-doge-darker border-2 border-doge-gold rounded-xl flex items-center justify-center text-4xl shadow-pixel">
-                  {item.image}
+                  <ItemVisual item={item} imageClassName="h-12 w-12 object-contain" />
                 </div>
                 <span className="bg-doge-gold text-doge-darker text-xs font-bold px-3 py-1 rounded-lg">{item.type}</span>
               </div>
@@ -408,7 +428,7 @@ const LandingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">AI Companion Showcase</p>
+            <p className="dogeos-label mx-auto mb-2">DogeOS Companions</p>
             <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Choose Your AI Companion</h2>
             <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Each companion brings a different edge into the chaos, from combat pressure to clutch movement.</p>
           </motion.div>
@@ -428,7 +448,7 @@ const LandingPage = () => {
                 className="landing-showcase-card panel-wood p-5 rounded-2xl shadow-pixel border-2 border-doge-coal text-center cursor-default"
               >
                 <div className="mx-auto w-20 h-20 bg-doge-darker border-2 border-doge-gold rounded-xl flex items-center justify-center text-5xl shadow-pixel">
-                  {companion.image}
+                  <ItemVisual item={companion} imageClassName="h-16 w-16 object-contain" />
                 </div>
                 <h3 className="mt-5 text-xl text-doge-gold font-bold">{companion.name}</h3>
                 <p className="mt-2 text-doge-iron text-sm font-bold">{companion.ability}</p>
@@ -452,7 +472,7 @@ const LandingPage = () => {
       <div id="gameplay-preview" className="pt-8 pb-6 md:pt-12 md:pb-8 px-4 w-full relative overflow-hidden">
         <GamePreviewScene />
         <div className="text-center mb-8 relative z-10 max-w-5xl mx-auto">
-          <p className="text-doge-gold font-bold text-xs sm:text-sm tracking-widest uppercase mb-2">Gameplay Preview</p>
+          <p className="dogeos-label mx-auto mb-2">DogeEscape Preview</p>
           <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3 font-heading">
             See It <span className="text-doge-gold bg-doge-coal/60 border-2 border-doge-dark px-4 py-1 rounded-xl">In Action</span>
           </h2>
@@ -481,7 +501,7 @@ const LandingPage = () => {
       <div id="leaderboard" className="pt-10 pb-14 md:pt-20 md:pb-28 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-x-hidden overflow-y-visible scroll-mt-16">
         {/* 3D Background */}
         <LeaderboardScene compact />
-        
+
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -530,7 +550,7 @@ const LandingPage = () => {
                   {leaderboard[0].avatar.startsWith('/') ? <img src={leaderboard[0].avatar} alt="avatar" className="w-full h-full object-cover" /> : <span className="text-5xl flex items-center justify-center w-full h-full">{leaderboard[0].avatar}</span>}
                 </div>
                 <div className="panel-wood w-full pt-14 pb-8 px-4 rounded-t-2xl border-t-4 border-doge-gold text-center -mt-20 h-48 flex flex-col justify-end relative shadow-pixel-lg" style={{ boxShadow: '0 -10px 30px rgba(240,180,41,0.3)' }}>
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                     className="absolute top-2 left-1/2 -translate-x-1/2 text-3xl"
@@ -571,7 +591,7 @@ const LandingPage = () => {
       <div className="pt-12 pb-20 px-4 max-w-6xl mx-auto relative overflow-hidden">
         {/* 3D Background */}
         <FeaturesScene />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -580,10 +600,10 @@ const LandingPage = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">Game Features 🚀</h2>
-          <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Fully integrated with the Doge Blockchain for true ownership.</p>
+          <p className="dogeos-copy text-doge-iron md:text-lg max-w-2xl mx-auto font-pixel">Fully integrated with the DogeOS game layer and Doge Blockchain ownership.</p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -596,7 +616,7 @@ const LandingPage = () => {
             { icon: '💬', title: 'Global Comm Link', text: 'Chat with players around the world in real-time. Show off your loot and strategize with top racers.' },
             { icon: '🔐', title: 'ZK Proof Leaderboards', text: 'Zero-Knowledge proofs ensure every high score is verified without exposing sensitive gameplay data.' }
           ].map((feature, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.01, borderColor: '#f0b429' }}
@@ -622,7 +642,7 @@ const LandingPage = () => {
       <div className="pt-14 pb-14 md:pt-24 md:pb-24 px-4 text-center relative overflow-hidden">
         {/* 3D Background */}
         <WarpSpeedScene />
-        
+
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
@@ -630,7 +650,7 @@ const LandingPage = () => {
           className="max-w-2xl mx-auto space-y-8 relative z-10"
         >
           <h2 className="text-4xl md:text-5xl text-doge-gold font-bold text-shadow-pixel font-heading">Ready to Escape?</h2>
-          <p className="text-doge-iron md:text-lg">Your boat is ready. Connect your wallet and start the next run.</p>
+          <p className="dogeos-copy text-doge-iron md:text-lg font-pixel">Your DogeOS run is ready. Connect your wallet and start the next escape.</p>
           <button
             onClick={handleConnect}
             disabled={isConnecting}
@@ -639,7 +659,7 @@ const LandingPage = () => {
             <span className="cta-spark cta-spark-one"></span>
             <span className="cta-spark cta-spark-two"></span>
             <span className="cta-spark cta-spark-three"></span>
-            <span className="relative z-10 flex items-center justify-center gap-2">
+            <span className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap">
               {isConnecting ? (
                 <span className="flex items-center gap-2">
                   <span className="animate-pulse">Connecting</span>
@@ -650,7 +670,7 @@ const LandingPage = () => {
               ) : (
                 <>
                   <span>🎮</span>
-                  <span>Connect Wallet & Play</span>
+                  <span>Connect Wallet </span>
                 </>
               )}
             </span>
@@ -671,7 +691,7 @@ const LandingPage = () => {
           {/* Left: Logo + Branding */}
           <div className="flex items-center gap-3">
             <img src="/images/DogeEscape-logo.png" alt="DogeEscape" className="w-8 h-8 object-contain" />
-            <span className="font-heading text-sm md:text-base text-doge-gold tracking-wider">DOGE ESCAPE</span>
+            <span className="font-heading text-sm md:text-base text-doge-gold tracking-wider font-pixel">DOGEESCAPE</span>
           </div>
 
           {/* Center: Nav Links */}

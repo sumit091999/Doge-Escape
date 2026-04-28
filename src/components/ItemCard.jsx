@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import ItemVisual from './ItemVisual';
 
 const ItemCard = ({ item, itemType, onClick }) => {
   return (
@@ -22,7 +23,7 @@ const ItemCard = ({ item, itemType, onClick }) => {
       <div className="flex items-center gap-3">
         {/* Item Image/Icon */}
         <div className="hotbar-slot w-12 h-12 md:w-14 md:h-14 text-3xl md:text-4xl shrink-0">
-          {item.image}
+          <ItemVisual item={item} imageClassName="h-11 w-11 md:h-12 md:w-12 object-contain" />
         </div>
 
         {/* Item Info */}

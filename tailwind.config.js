@@ -25,8 +25,8 @@ export default {
         }
       },
       fontFamily: {
-        pixel: ['"Comic Neue"', 'cursive'],
-        heading: ['"Orbitron"', 'sans-serif'],
+        pixel: ['"Silkscreen"', '"Pixelify Sans"', 'monospace'],
+        heading: ['"PP Neue Machina Inktrap"', '"PP Neue Machina"', '"Space Grotesk"', '"Orbitron"', 'sans-serif'],
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',

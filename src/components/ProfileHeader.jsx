@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import { useWallet } from '../context/WalletContext';
 import TopBarScene from './TopBarScene';
-import ThemeToggle from './ThemeToggle';
 import AICompanionChat from './AICompanionChat';
+import ItemVisual from './ItemVisual';
 
 const ProfileHeader = ({ showBack }) => {
   const { coins, avatar, username, selectedCompanion } = useGame();
@@ -90,7 +90,7 @@ const ProfileHeader = ({ showBack }) => {
         </div>
 
         <div className="game-mobile-info-row">
-          <ThemeToggle compact />
+
           <button
             type="button"
             onClick={() => setShowAiCompanion(true)}
@@ -98,7 +98,7 @@ const ProfileHeader = ({ showBack }) => {
             aria-label="Open AI companion"
             title="AI Companion"
           >
-            <span>{selectedCompanion?.image || '🤖'}</span>
+            <ItemVisual item={selectedCompanion} className="text-2xl" imageClassName="h-6 w-6 object-contain" alt="AI Companion" />
           </button>
           <div className="game-nav-currency game-mobile-currency">
             <span>💰</span>
@@ -143,7 +143,7 @@ const ProfileHeader = ({ showBack }) => {
       </nav>
 
       <div className="game-nav-actions relative z-10 hidden md:flex">
-        <ThemeToggle compact />
+
         <button
           type="button"
           onClick={() => setShowAiCompanion(true)}
@@ -151,7 +151,7 @@ const ProfileHeader = ({ showBack }) => {
           aria-label="Open AI companion"
           title="AI Companion"
         >
-          <span>{selectedCompanion?.image || '🤖'}</span>
+          <ItemVisual item={selectedCompanion} className="text-2xl" imageClassName="h-6 w-6 object-contain" alt="AI Companion" />
         </button>
         <div className="game-nav-currency">
           <span>💰</span>

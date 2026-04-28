@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Pixelify+Sans:wght@600;700&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,6 +16,7 @@
 @layer base {
   body {
     @apply bg-doge-darker text-white font-pixel;
+    font-feature-settings: 'ss01' on, 'ss02' on, 'liga' on;
     background-image: 
       radial-gradient(
         ellipse at 20% 50%,
@@ -24,6 +28,30 @@
         rgba(200, 160, 96, 0.03) 0%,
         transparent 60%
       );
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-heading {
+    font-family: "PP Neue Machina Inktrap", "PP Neue Machina", "Space Grotesk", "Orbitron", sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .font-pixel {
+    font-family: "Silkscreen", "Pixelify Sans", cursive !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  strong,
+  button,
+  input,
+  textarea {
+    font-family: "Satoshi", "Inter", "Manrope", "Comic Neue", sans-serif;
   }
 
   * {
@@ -385,18 +413,18 @@
 
   .landing-title-main {
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 12px;
     align-items: center;
     justify-content: center;
-    font-family: 'Orbitron', sans-serif;
+    font-family: "PP Neue Machina Inktrap", "PP Neue Machina", "Space Grotesk", "Orbitron", sans-serif;
     background:
       linear-gradient(180deg, #fff4a8 0%, #f7c948 42%, #b87406 100%),
       repeating-linear-gradient(90deg, rgba(26, 21, 16, 0.08) 0 12px, transparent 12px 24px);
     color: #1a1510;
     font-size: clamp(32px, 6.4vw, 68px);
     font-weight: 900;
-    letter-spacing: 0;
+    letter-spacing: 0.02em;
     padding: 16px 24px 14px;
     text-shadow:
       2px 2px 0 rgba(255, 246, 190, 0.36),
@@ -404,18 +432,24 @@
   }
 
   .landing-title-main span:first-child {
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
   }
 
   .landing-title-main span:last-child {
     border-radius: 8px;
     background: rgba(26, 21, 16, 0.9);
     color: #ffe36b;
-    padding: 8px 12px 7px;
-    font-size: 0.54em;
-    letter-spacing: 0.18em;
-    text-shadow: 0 0 16px rgba(240, 180, 41, 0.56);
-    transform: skewX(-6deg);
+    padding: 9px 14px 8px;
+    font-family: "Silkscreen", "Pixelify Sans", "Courier New", monospace;
+    font-size: 0.5em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-shadow:
+      2px 0 0 rgba(255, 246, 178, 0.16),
+      0 2px 0 rgba(255, 246, 178, 0.12),
+      0 0 16px rgba(240, 180, 41, 0.56);
+    transform: skewX(-5deg);
+    image-rendering: pixelated;
   }
 
   .landing-title-kicker {
@@ -434,6 +468,41 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.34);
+  }
+
+  .dogeos-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #f7c948;
+    font-family: "PP Neue Machina Inktrap", "PP Neue Machina", "Space Grotesk", "Orbitron", sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .dogeos-label::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: currentColor;
+    box-shadow: 0 0 10px rgba(240, 180, 41, 0.55);
+  }
+
+  .dogeos-copy {
+    font-family: "Satoshi", "Inter", "Manrope", "Comic Neue", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .dogeos-chip {
+    font-family: "PP Neue Machina Inktrap", "PP Neue Machina", "Space Grotesk", "Orbitron", sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .landing-title-sub {
@@ -3469,73 +3538,6 @@
     linear-gradient(180deg, #160f0a 0%, #0f0c08 62%, #120d08 100%);
 }
 
-:root[data-theme="such-wow-arcade"] {
-  --theme-dark: #101014;
-  --theme-dark-rgb: 16 16 20;
-  --theme-darker: #050507;
-  --theme-darker-rgb: 5 5 7;
-  --theme-stone: #6f7cff;
-  --theme-stone-rgb: 111 124 255;
-  --theme-wood: #f72585;
-  --theme-wood-rgb: 247 37 133;
-  --theme-dirt: #b5179e;
-  --theme-dirt-rgb: 181 23 158;
-  --theme-grass: #39ff14;
-  --theme-grass-rgb: 57 255 20;
-  --theme-gold: #ffe600;
-  --theme-gold-rgb: 255 230 0;
-  --theme-emerald: #00f5ff;
-  --theme-emerald-rgb: 0 245 255;
-  --theme-diamond: #7df9ff;
-  --theme-diamond-rgb: 125 249 255;
-  --theme-redstone: #ff2d55;
-  --theme-redstone-rgb: 255 45 85;
-  --theme-coal: #171024;
-  --theme-coal-rgb: 23 16 36;
-  --theme-iron: #f8f7ff;
-  --theme-iron-rgb: 248 247 255;
-  --theme-lava: #ff8c00;
-  --theme-lava-rgb: 255 140 0;
-  --theme-water: #00b4ff;
-  --theme-water-rgb: 0 180 255;
-  --theme-page-gradient: radial-gradient(circle at 18% 8%, rgba(255, 230, 0, 0.14), transparent 26%),
-    radial-gradient(circle at 82% 18%, rgba(0, 245, 255, 0.12), transparent 28%),
-    linear-gradient(180deg, #09070d 0%, #050507 58%, #100719 100%);
-}
-
-:root[data-theme="doge-network-state"] {
-  --theme-dark: #101820;
-  --theme-dark-rgb: 16 24 32;
-  --theme-darker: #070b10;
-  --theme-darker-rgb: 7 11 16;
-  --theme-stone: #637083;
-  --theme-stone-rgb: 99 112 131;
-  --theme-wood: #2f80ed;
-  --theme-wood-rgb: 47 128 237;
-  --theme-dirt: #2459a8;
-  --theme-dirt-rgb: 36 89 168;
-  --theme-grass: #35d0ba;
-  --theme-grass-rgb: 53 208 186;
-  --theme-gold: #ffd447;
-  --theme-gold-rgb: 255 212 71;
-  --theme-emerald: #69e6ff;
-  --theme-emerald-rgb: 105 230 255;
-  --theme-diamond: #4ea8de;
-  --theme-diamond-rgb: 78 168 222;
-  --theme-redstone: #ff5c7a;
-  --theme-redstone-rgb: 255 92 122;
-  --theme-coal: #111827;
-  --theme-coal-rgb: 17 24 39;
-  --theme-iron: #eef6ff;
-  --theme-iron-rgb: 238 246 255;
-  --theme-lava: #ff9f1c;
-  --theme-lava-rgb: 255 159 28;
-  --theme-water: #2ec4b6;
-  --theme-water-rgb: 46 196 182;
-  --theme-page-gradient: radial-gradient(circle at 18% 9%, rgba(255, 212, 71, 0.12), transparent 26%),
-    radial-gradient(circle at 86% 20%, rgba(78, 168, 222, 0.16), transparent 30%),
-    linear-gradient(180deg, #08111a 0%, #070b10 58%, #0b1622 100%);
-}
 
 body {
   background-color: var(--theme-darker);
@@ -3649,68 +3651,3 @@ body {
   background: color-mix(in srgb, var(--theme-gold) 14%, transparent);
 }
 
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  border: 2px solid color-mix(in srgb, var(--theme-gold) 48%, transparent);
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--theme-dark) 88%, transparent), color-mix(in srgb, var(--theme-darker) 94%, transparent));
-  color: var(--theme-iron);
-  padding: 6px;
-  font-weight: 900;
-  box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.42),
-    0 0 20px color-mix(in srgb, var(--theme-gold) 22%, transparent);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.theme-toggle:hover {
-  border-color: var(--theme-gold);
-  box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.42),
-    0 0 26px color-mix(in srgb, var(--theme-gold) 36%, transparent);
-}
-
-.theme-toggle-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--theme-gold);
-  color: var(--theme-darker);
-  font-size: 18px;
-  line-height: 1;
-  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.22), inset -2px -2px 0 rgba(0, 0, 0, 0.18);
-}
-
-.theme-toggle-compact {
-  min-width: 38px;
-  min-height: 38px;
-  padding: 5px;
-}
-
-.theme-toggle-compact .theme-toggle-mark {
-  width: 26px;
-  height: 26px;
-  font-size: 16px;
-}
-
-.landing-theme-toggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 40;
-}
-
-@media (max-width: 720px) {
-  .landing-theme-toggle {
-    top: 12px;
-    right: 12px;
-  }
-}

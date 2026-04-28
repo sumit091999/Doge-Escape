@@ -19,9 +19,9 @@ const DUMMY_BOATS = [
 ];
 
 const DUMMY_COMPANIONS = [
-  { id: 1, name: 'Steve', ability: 'Combat Pro', damage: 85, defense: 70, price: 600, rentPrice: 60, owned: true, image: '🧔' },
-  { id: 2, name: 'Alex', ability: 'Speed Boost', damage: 70, defense: 60, price: 550, rentPrice: 55, owned: false, image: '👩' },
-  { id: 3, name: 'Enderman', ability: 'Teleport', damage: 95, defense: 50, price: 1000, rentPrice: 100, owned: false, image: '👾' },
+  { id: 1, name: 'DogeOS Captain', ability: 'Combat Kernel', damage: 85, defense: 70, price: 600, rentPrice: 60, owned: true, image: '/images/dogeos-captain.svg' },
+  { id: 2, name: 'DogeOS Racer', ability: 'Speed Daemon', damage: 70, defense: 60, price: 550, rentPrice: 55, owned: false, image: '/images/dogeos-racer.svg' },
+  { id: 3, name: 'DogeOS Oracle', ability: 'Warp Blink', damage: 95, defense: 50, price: 1000, rentPrice: 100, owned: false, image: '/images/dogeos-oracle.svg' },
 ];
 
 const DUMMY_GUNS = [
