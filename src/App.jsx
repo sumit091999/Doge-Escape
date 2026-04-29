@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { WalletConnectProvider as DogeOSConnectProvider } from '@dogeos/dogeos-sdk';
 import { WalletProvider, useWallet } from './context/WalletContext';
@@ -77,6 +78,28 @@ if (dogeOSClientId === 'YOUR_DOGEOS_CLIENT_ID') {
   console.warn('Set VITE_DOGEOS_CLIENT_ID to your approved DogeOS SDK client ID.');
 }
 
+const InitialLoadingScreenDismissal = () => {
+  useEffect(() => {
+    const dismissLoadingScreen = () => {
+      const loadingScreen = document.getElementById('loading-screen');
+
+      if (!loadingScreen) {
+        return;
+      }
+
+      loadingScreen.style.opacity = '0';
+      loadingScreen.style.transition = 'opacity 0.35s ease-out';
+      window.setTimeout(() => loadingScreen.remove(), 400);
+    };
+
+    const frameId = window.requestAnimationFrame(dismissLoadingScreen);
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, []);
+
+  return null;
+};
+
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   const { isConnected, isInitializing } = useWallet();
@@ -144,6 +167,7 @@ function App() {
   return (
     <Router>
       <ThemeProvider>
+        <InitialLoadingScreenDismissal />
         <DogeOSConnectProvider config={dogeOSConfig}>
           <WalletProvider>
             <GameProvider>
