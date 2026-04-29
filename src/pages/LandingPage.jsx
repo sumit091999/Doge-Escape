@@ -15,10 +15,11 @@ import ItemVisual from '../components/ItemVisual';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const { connectWallet, isConnecting } = useWallet();
+  const { connectWallet, isConnecting, isConnected } = useWallet();
   const { leaderboard, boats, companions, guns } = useGame();
   const [particles, setParticles] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [waitingForWallet, setWaitingForWallet] = useState(false);
   const marketplacePreviewItems = [
     ...boats.slice(0, 2).map((item) => ({ ...item, type: 'Boat', stat: `${item.speed} Speed` })),
     ...guns.slice(0, 1).map((item) => ({ ...item, type: 'Weapon', stat: `${item.damage} Damage` })),
@@ -51,7 +52,14 @@ const LandingPage = () => {
   }, [isConnected, navigate]);
   */
 
+  useEffect(() => {
+    if (waitingForWallet && isConnected) {
+      navigate('/Home');
+    }
+  }, [waitingForWallet, isConnected, navigate]);
+
   const handleConnect = async () => {
+    setWaitingForWallet(true);
     const account = await connectWallet();
     if (account) {
       navigate('/Home');
@@ -268,11 +276,11 @@ const LandingPage = () => {
             </motion.div>
 
             {/* Action Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 w-full pt-2">
+            <motion.div variants={itemVariants} className="flex flex-col xl:flex-row gap-4 w-full pt-2">
               <button
                 onClick={handleConnect}
                 disabled={isConnecting}
-                className="btn-primary connect-wallet-bright flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-base font-pixel group whitespace-nowrap py-3 sm:py-4"
+                className="btn-primary connect-wallet-bright landing-wallet-button flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm 2xl:text-base font-pixel group whitespace-nowrap py-3 sm:py-4"
               >
                 {isConnecting ? (
                   <span className="animate-pulse">Connecting...</span>
@@ -290,7 +298,7 @@ const LandingPage = () => {
                 )}
               </button>
               <button
-                className="btn-secondary flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm font-pixel group"
+                className="btn-secondary landing-wallet-button flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm font-pixel group"
                 onClick={() => document.getElementById('gameplay-preview')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <span>Watch Trailer</span>

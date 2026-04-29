@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { WalletConnectProvider as DogeOSConnectProvider } from '@dogeos/dogeos-sdk';
 import { WalletProvider, useWallet } from './context/WalletContext';
 import { GameProvider } from './context/GameContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -8,6 +9,73 @@ import GamePage from './pages/GamePage';
 import ProfilePage from './pages/ProfilePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import MarketPage from './pages/MarketPage';
+
+const dogeOSClientId = import.meta.env.VITE_DOGEOS_CLIENT_ID || 'YOUR_DOGEOS_CLIENT_ID';
+
+const dogeOSConnectors = [
+  {
+    id: 'dogeescape-mydoge',
+    name: 'MyDoge Wallet',
+    dogecoin: {
+      namespace: 'doge',
+    },
+    icon: '/images/mydoge-assets/Square_Logo.png',
+    iconBackground: '#f0b429',
+    downloadUrls: {
+      chrome: 'https://v3.mydoge.com/',
+      browserExtension: 'https://v3.mydoge.com/',
+      qrCode: 'https://v3.mydoge.com/',
+    },
+  },
+];
+
+const dogeOSConfig = {
+  clientId: dogeOSClientId,
+  connectors: dogeOSConnectors,
+  metadata: {
+    name: 'Doge Escape',
+    description: 'Race, collect, and trade in the Doge Escape game world.',
+    url: typeof window !== 'undefined' ? window.location.origin : 'https://dogeescape.xyz',
+    icons: ['/images/Icon-Logo.png'],
+  },
+  theme: {
+    defaultTheme: 'dark',
+    themes: {
+      dark: {
+        colors: {
+          primary: {
+            DEFAULT: '#f0b429',
+            foreground: '#120d08',
+          },
+          background: '#0f0c08',
+          foreground: '#f8f1df',
+          content1: '#17100b',
+          content2: '#21170f',
+          content3: '#2b1f15',
+          content4: '#3a2a1c',
+          divider: '#5a4328',
+          focus: '#f0b429',
+          default: {
+            DEFAULT: '#2b1f15',
+            foreground: '#f8f1df',
+          },
+        },
+      },
+      light: {
+        colors: {
+          primary: {
+            DEFAULT: '#f0b429',
+            foreground: '#120d08',
+          },
+        },
+      },
+    },
+  },
+};
+
+if (dogeOSClientId === 'YOUR_DOGEOS_CLIENT_ID') {
+  console.warn('Set VITE_DOGEOS_CLIENT_ID to your approved DogeOS SDK client ID.');
+}
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -76,13 +144,15 @@ function App() {
   return (
     <Router>
       <ThemeProvider>
-        <WalletProvider>
-          <GameProvider>
-            <div className="min-h-screen">
-              <AppRoutes />
-            </div>
-          </GameProvider>
-        </WalletProvider>
+        <DogeOSConnectProvider config={dogeOSConfig}>
+          <WalletProvider>
+            <GameProvider>
+              <div className="min-h-screen">
+                <AppRoutes />
+              </div>
+            </GameProvider>
+          </WalletProvider>
+        </DogeOSConnectProvider>
       </ThemeProvider>
     </Router>
   );

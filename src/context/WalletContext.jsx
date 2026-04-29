@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useAccount, useWalletConnect } from '@dogeos/dogeos-sdk';
 
 const WalletContext = createContext();
 
@@ -11,68 +12,125 @@ export const useWallet = () => {
 };
 
 export const WalletProvider = ({ children }) => {
-  const [account, setAccount] = useState(() => {
-    // Restore saved address immediately so ProtectedRoute doesn't redirect
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('doge_wallet_address') || null;
-    }
-    return null;
-  });
-  const [isConnecting, setIsConnecting] = useState(false);
+  const {
+    address,
+    balance,
+    chainType,
+    chainId,
+    currentWallet,
+    currentProvider,
+    switchChain,
+    signMessage,
+    signInWithWallet,
+  } = useAccount();
+  const {
+    isOpenModal,
+    isConnected,
+    isConnecting,
+    error,
+    connect,
+    disconnect: disconnectDogeOS,
+    openModal,
+    closeModal,
+  } = useWalletConnect();
   const [isInitializing, setIsInitializing] = useState(true);
 
-  // On mount, just trust localStorage — don't call window.doge.connect()
-  // which opens the wallet popup. connect() is only called on explicit user action.
   useEffect(() => {
     setIsInitializing(false);
   }, []);
 
-  const connectWallet = async () => {
-    if (typeof window === 'undefined' || !window.doge) {
-      const wantToDownload = window.confirm('Install doge wallet to play. Click OK to download.');
-      if (wantToDownload) {
-        window.open('https://v3.mydoge.com/', '_blank');
-      }
-      return;
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (address) {
+      localStorage.setItem('doge_wallet_address', address);
+    } else if (!isConnected) {
+      localStorage.removeItem('doge_wallet_address');
+    }
+  }, [address, isConnected]);
+
+  const connectWallet = useCallback(async () => {
+    if (isConnected && address) {
+      return address;
     }
 
-    setIsConnecting(true);
     try {
-      const res = await window.doge.connect();
-      if (res && res.address) {
-        setAccount(res.address);
-        localStorage.setItem('doge_wallet_address', res.address);
-        return res.address;
-      }
+      openModal();
+      return null;
     } catch (error) {
-      console.error('Error connecting wallet:', error);
-      alert('Failed to connect Doge wallet. Please try again.');
-    } finally {
-      setIsConnecting(false);
+      console.error('Error opening DogeOS wallet modal:', error);
+      alert('Failed to open DogeOS wallet connection. Please try again.');
+      return null;
     }
-  };
+  }, [address, isConnected, openModal]);
 
-  const disconnect = () => {
-    setAccount(null);
-    localStorage.removeItem('doge_wallet_address');
-  };
+  const disconnect = useCallback(async () => {
+    try {
+      await disconnectDogeOS();
+    } catch (error) {
+      console.error('Error disconnecting DogeOS wallet:', error);
+    } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('doge_wallet_address');
+      }
+    }
+  }, [disconnectDogeOS]);
 
-  const getShortAddress = (address) => {
+  const getShortAddress = useCallback((address) => {
     if (!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+  }, []);
+
+  const account = address || null;
+
+  const value = useMemo(() => ({
+    account,
+    address: account,
+    balance,
+    chainType,
+    chainId,
+    currentWallet,
+    currentProvider,
+    isOpenModal,
+    isConnecting,
+    isInitializing,
+    isConnected: Boolean(isConnected && account),
+    error,
+    connect,
+    connectWallet,
+    disconnect,
+    openModal,
+    closeModal,
+    switchChain,
+    signMessage,
+    signInWithWallet,
+    getShortAddress,
+  }), [
+    account,
+    balance,
+    chainType,
+    chainId,
+    currentWallet,
+    currentProvider,
+    isOpenModal,
+    isConnecting,
+    isInitializing,
+    isConnected,
+    error,
+    connect,
+    switchChain,
+    signMessage,
+    signInWithWallet,
+    connectWallet,
+    disconnect,
+    openModal,
+    closeModal,
+    getShortAddress,
+  ]);
 
   return (
     <WalletContext.Provider
-      value={{
-        account,
-        isConnecting,
-        isInitializing,
-        connectWallet,
-        disconnect,
-        getShortAddress,
-        isConnected: !!account,
-      }}
+      value={value}
     >
       {children}
     </WalletContext.Provider>

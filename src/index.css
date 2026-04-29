@@ -782,6 +782,23 @@
       0 0 52px rgba(240, 180, 41, 0.34);
   }
 
+  .landing-wallet-button {
+    width: 100%;
+    min-width: 0;
+    padding-left: clamp(14px, 2.4vw, 24px) !important;
+    padding-right: clamp(14px, 2.4vw, 24px) !important;
+    line-height: 1.15;
+  }
+
+  .landing-wallet-button > span,
+  .landing-wallet-button {
+    overflow: visible;
+  }
+
+  .landing-wallet-button {
+    font-size: clamp(0.78rem, 1.45vw, 1rem);
+  }
+
   .cta-play-now::after {
     content: '';
     position: absolute;
@@ -3651,3 +3668,240 @@ body {
   background: color-mix(in srgb, var(--theme-gold) 14%, transparent);
 }
 
+#modal-container,
+#modal-container * {
+  font-family: "Satoshi", "Inter", "Manrope", system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  image-rendering: auto;
+}
+
+#modal-container {
+  color-scheme: dark;
+  position: relative;
+  z-index: 9999;
+}
+
+#modal-container [role="dialog"],
+#modal-container section[aria-modal="true"] {
+  width: min(448px, calc(100vw - 32px)) !important;
+  max-height: min(720px, calc(100vh - 32px)) !important;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-gold) 28%, transparent) !important;
+  background:
+    linear-gradient(180deg, rgba(26, 21, 16, 0.98), rgba(15, 12, 8, 0.98)) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+#modal-container button,
+#modal-container input,
+#modal-container textarea,
+#modal-container select {
+  font-family: "Satoshi", "Inter", "Manrope", system-ui, sans-serif !important;
+  text-transform: none !important;
+}
+
+#modal-container button {
+  min-height: 44px;
+  border-radius: 12px !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) {
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  gap: 12px !important;
+  align-items: center !important;
+  padding-bottom: 6px !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .font-medium.text-lg {
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  color: #f8f1df !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 {
+  gap: 8px !important;
+}
+
+#modal-container .py-3 .flex.items-center.gap-1:has(> span),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span) {
+  font-size: 0 !important;
+  min-width: 178px !important;
+  min-height: 48px !important;
+  justify-content: center !important;
+  border: 1px solid #f0b429 !important;
+  background: linear-gradient(180deg, #ffd65a 0%, #f0b429 100%) !important;
+  color: #120d08 !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 0 0 2px rgba(240, 180, 41, 0.18), 0 10px 28px rgba(240, 180, 41, 0.2) !important;
+}
+
+#modal-container .py-3 .flex.items-center.gap-1:has(> span) span,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span) span,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span) span {
+  display: none !important;
+}
+
+#modal-container .py-3 .flex.items-center.gap-1:has(> span)::before,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span)::before,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span)::before {
+  content: "Connect wallet";
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+}
+
+#modal-container .py-3 .flex.items-center.gap-1:has(> span):hover,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span):hover,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span):hover {
+  background: linear-gradient(180deg, #ffe084 0%, #f6c13a 100%) !important;
+  transform: translateY(-1px);
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:not(:has(span)),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:not(:has(span)) {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 86, 86, 0.45) !important;
+  background: rgba(255, 86, 86, 0.12) !important;
+  color: #ff5a5a !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:not(:has(span)):hover,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:not(:has(span)):hover {
+  border-color: #ff5a5a !important;
+  background: rgba(255, 86, 86, 0.2) !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:not(:has(span)) svg,
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:not(:has(span)) svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: #ff5a5a !important;
+  stroke-width: 2.5 !important;
+}
+
+#modal-container .pt-8 {
+  padding-top: 14px !important;
+}
+
+#modal-container .pb-6.flex.gap-3 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px !important;
+  padding-bottom: 14px !important;
+}
+
+#modal-container .pb-6.flex.gap-3 > button {
+  width: 100% !important;
+  min-height: 48px !important;
+  border: 1px solid color-mix(in srgb, var(--theme-gold) 28%, transparent) !important;
+  background: #17100b !important;
+  color: #f8f1df !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+}
+
+#modal-container .pb-6.flex.gap-3 > button:first-child {
+  border-color: color-mix(in srgb, #f8f1df 22%, transparent) !important;
+}
+
+#modal-container .pb-6.flex.gap-3 > button:last-child {
+  background: #f8f1df !important;
+  color: #120d08 !important;
+}
+
+#modal-container input {
+  min-height: 44px;
+}
+
+#modal-container img,
+#modal-container svg {
+  image-rendering: auto;
+  flex-shrink: 0;
+}
+
+@media (max-width: 540px) {
+  #modal-container .py-3:has(> .font-medium.text-lg) {
+    grid-template-columns: 1fr;
+  }
+
+  #modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 {
+    width: 100%;
+    justify-content: space-between !important;
+  }
+
+  #modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span),
+  #modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span) {
+    min-width: 0 !important;
+    flex: 1 1 auto;
+  }
+
+  #modal-container .pb-6.flex.gap-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  grid-template-areas:
+    "title close"
+    "wallet wallet" !important;
+  align-items: center !important;
+  gap: 18px 12px !important;
+  padding-bottom: 18px !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .font-medium.text-lg {
+  grid-area: title;
+  justify-self: start;
+  font-size: clamp(1.5rem, 4.5vw, 2rem) !important;
+  line-height: 1.08 !important;
+  text-align: left !important;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 {
+  display: contents !important;
+}
+
+#modal-container .py-3 .flex.items-center.gap-1:has(> span),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:has(span),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:has(span) {
+  grid-area: wallet;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 56px !important;
+  margin-top: 2px;
+}
+
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > button:not(:has(span)),
+#modal-container .py-3:has(> .font-medium.text-lg) > .flex.items-center.gap-3 > [role="button"]:not(:has(span)) {
+  grid-area: close;
+  justify-self: end;
+  align-self: start;
+}
+
+#modal-container .pb-6.flex.gap-3 {
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  padding-bottom: 18px !important;
+}
+
+#modal-container .pb-6.flex.gap-3 > button {
+  min-height: 56px !important;
+}
+
+#modal-container .pb-6.flex.gap-3 > button:first-child {
+  order: 3;
+}
+
+#modal-container .pb-6.flex.gap-3 > button:last-child {
+  order: 2;
+}
