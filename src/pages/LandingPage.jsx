@@ -332,6 +332,35 @@ const LandingPage = () => {
       </div>
       {/* End Hero Section */}
 
+      {/* Gameplay Trailer Section */}
+      <div id="gameplay-preview" className="pt-8 pb-6 md:pt-12 md:pb-8 px-4 w-full relative overflow-hidden">
+        <GamePreviewScene />
+        <div className="text-center mb-8 relative z-10 max-w-5xl mx-auto">
+          <p className="dogeos-label mx-auto mb-2">DogeEscape Preview</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3 font-heading">
+            See It <span className="text-doge-gold bg-doge-coal/60 border-2 border-doge-dark px-4 py-1 rounded-xl">In Action</span>
+          </h2>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="gameplay-video-frame w-full max-w-5xl mx-auto relative z-10 rounded-3xl overflow-hidden border-4 border-doge-stone shadow-pixel-lg bg-doge-darker"
+        >
+          <video
+            src="/videos/gameplay.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="gameplay-video"
+          />
+          {/* Subtle inner shadow overlay */}
+          <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.6)] pointer-events-none rounded-3xl"></div>
+        </motion.div>
+      </div>
+
       {/* 2. How to Play Section */}
       <div id="how-to-play" className="pt-6 pb-8 md:pt-7 md:pb-10 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
         {/* 3D Background */}
@@ -474,35 +503,6 @@ const LandingPage = () => {
             ))}
           </motion.div>
         </div>
-      </div>
-
-      {/* Gameplay Trailer Section */}
-      <div id="gameplay-preview" className="pt-8 pb-6 md:pt-12 md:pb-8 px-4 w-full relative overflow-hidden">
-        <GamePreviewScene />
-        <div className="text-center mb-8 relative z-10 max-w-5xl mx-auto">
-          <p className="dogeos-label mx-auto mb-2">DogeEscape Preview</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3 font-heading">
-            See It <span className="text-doge-gold bg-doge-coal/60 border-2 border-doge-dark px-4 py-1 rounded-xl">In Action</span>
-          </h2>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="gameplay-video-frame w-full max-w-5xl mx-auto relative z-10 rounded-3xl overflow-hidden border-4 border-doge-stone shadow-pixel-lg bg-doge-darker"
-        >
-          <video
-            src="/videos/gameplay.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="gameplay-video"
-          />
-          {/* Subtle inner shadow overlay */}
-          <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.6)] pointer-events-none rounded-3xl"></div>
-        </motion.div>
       </div>
 
       {/* 3. Top Scorers Section */}
