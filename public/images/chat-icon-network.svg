@@ -1,0 +1,16 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orb" x1="21" y1="18" x2="104" y2="105" gradientUnits="userSpaceOnUse"><stop stop-color="#DDF8FF"/><stop offset=".44" stop-color="#66D9FF"/><stop offset="1" stop-color="#153A5A"/></linearGradient>
+    <linearGradient id="gold" x1="43" y1="35" x2="97" y2="94" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE36B"/><stop offset=".55" stop-color="#F0B429"/><stop offset="1" stop-color="#8B5A12"/></linearGradient>
+    <filter id="shadow" x="12" y="13" width="105" height="105" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <circle cx="64" cy="59" r="38" fill="#121720"/>
+    <circle cx="64" cy="59" r="30" fill="url(#orb)" opacity=".9"/>
+    <path d="M38 59H90M64 29C56 39 52 49 52 59C52 69 56 79 64 89M64 29C72 39 76 49 76 59C76 69 72 79 64 89M43 42C55 48 73 48 85 42M43 76C55 70 73 70 85 76" stroke="#EFFFFF" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+    <path d="M42 84C42 76.8 47.8 71 55 71H92C99.2 71 105 76.8 105 84V96C105 103.2 99.2 109 92 109H69L55 120V109C47.8 109 42 103.2 42 96V84Z" fill="url(#gold)"/>
+    <circle cx="61" cy="90" r="4" fill="#23170D"/>
+    <circle cx="75" cy="90" r="4" fill="#23170D"/>
+    <circle cx="89" cy="90" r="4" fill="#23170D"/>
+  </g>
+</svg>

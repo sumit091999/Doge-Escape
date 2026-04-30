@@ -505,6 +505,31 @@
     text-transform: uppercase;
   }
 
+  .hero-feature-chip {
+    min-height: 44px;
+    border-color: rgba(240, 180, 41, 0.5);
+    background:
+      linear-gradient(180deg, rgba(45, 33, 20, 0.96), rgba(18, 13, 8, 0.94));
+    color: #fff4d2;
+    font-family: "Space Grotesk", "Manrope", "Inter", sans-serif !important;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55);
+    box-shadow:
+      4px 4px 0 rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(255, 227, 107, 0.1),
+      0 0 18px rgba(240, 180, 41, 0.12);
+  }
+
+  .hero-feature-check {
+    color: #ffe36b;
+    font-family: "Space Grotesk", "Manrope", sans-serif;
+    font-size: 1.08em;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(240, 180, 41, 0.5);
+  }
+
   .landing-title-sub {
     background: rgba(26, 21, 16, 0.86);
     color: #f7c948;
@@ -1042,6 +1067,14 @@
     min-height: 54px;
   }
 
+  .game-mobile-header.game-compact-header {
+    display: none;
+  }
+
+  .game-desktop-nav {
+    display: flex;
+  }
+
   .game-nav-brand {
     display: flex;
     align-items: center;
@@ -1088,6 +1121,13 @@
     font-weight: 800;
     white-space: nowrap;
     transition: color 0.2s ease;
+  }
+
+  .game-nav-link-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(240, 180, 41, 0.22));
   }
 
   .game-nav-link::after {
@@ -1233,6 +1273,20 @@
     border-radius: 8px;
     background: rgba(15, 12, 8, 0.5);
     padding: 4px 5px;
+  }
+
+  .game-mobile-menu-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .market-title-icon {
+    width: clamp(38px, 5vw, 58px);
+    height: clamp(38px, 5vw, 58px);
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(240, 180, 41, 0.25));
   }
 
   .game-nav-currency {
@@ -2084,31 +2138,16 @@
 
   @media (min-width: 768px) and (max-width: 1100px) {
     .game-nav-shell {
-      grid-template-columns: auto minmax(0, 1fr) auto auto;
-      grid-template-areas:
-        "brand links actions disconnect";
-      justify-items: stretch;
+      grid-template-columns: minmax(0, 1fr);
       padding: 10px 14px;
     }
 
-    .game-nav-brand {
-      grid-area: brand;
+    .game-mobile-header.game-compact-header {
+      display: grid;
     }
 
-    .game-nav-links {
-      grid-area: links;
-      justify-content: center;
-      gap: clamp(8px, 1.5vw, 18px);
-    }
-
-    .game-nav-actions {
-      grid-area: actions;
-      justify-content: flex-end;
-      width: auto;
-    }
-
-    .game-nav-disconnect-slot {
-      grid-area: disconnect;
+    .game-desktop-nav {
+      display: none;
     }
 
     .profile-hero {
@@ -2151,6 +2190,14 @@
       grid-template-columns: minmax(0, 1fr);
       width: calc(100% + 1.5rem);
       margin: -0.75rem -0.75rem 0;
+    }
+
+    .game-mobile-header.game-compact-header {
+      display: grid;
+    }
+
+    .game-desktop-nav {
+      display: none;
     }
 
     .home-stats-strip {

@@ -141,7 +141,7 @@ const MarketPage = () => {
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl text-doge-gold font-bold text-shadow-pixel flex items-center gap-3">
-                  <span>🛒</span> DOGE MARKET
+                  <img src="/images/marketplace-icon-storefront.svg" alt="" className="market-title-icon" /> DOGE MARKET
                 </h1>
                 <p className="text-doge-iron text-sm md:text-base">Upgrade your gear and dominate the waters.</p>
               </div>

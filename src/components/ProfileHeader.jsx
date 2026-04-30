@@ -19,7 +19,7 @@ const ProfileHeader = ({ showBack }) => {
   const navItems = [
     { label: 'Home', path: '/Home', icon: '🏠' },
     { label: 'Game', path: '/play', icon: '🎮' },
-    { label: 'Market', path: '/market', icon: '🛒' },
+    { label: 'Market', path: '/market', iconImage: '/images/marketplace-icon-storefront.svg', iconAlt: 'Market' },
     { label: 'Ranks', path: '/leaderboard', icon: '🏆' },
     { label: 'Profile', path: '/profile', icon: '👤' },
   ];
@@ -38,7 +38,7 @@ const ProfileHeader = ({ showBack }) => {
       className="game-nav-shell relative z-50"
     >
       <TopBarScene />
-      <div className="game-mobile-header relative z-10 md:hidden">
+      <div className="game-mobile-header game-compact-header relative z-10">
         <div className="game-mobile-main-row">
           <div className="game-mobile-player">
             {showBack && (
@@ -111,7 +111,7 @@ const ProfileHeader = ({ showBack }) => {
         </div>
       </div>
 
-      <div className="game-nav-brand relative z-10 hidden md:flex">
+      <div className="game-nav-brand game-desktop-nav relative z-10">
         {showBack && (
           <button type="button" onClick={() => navigate('/Home')} className="game-nav-back">
             ←
@@ -128,7 +128,7 @@ const ProfileHeader = ({ showBack }) => {
       </div>
 
       {/* Desktop Navigation Links */}
-      <nav className="game-nav-links relative z-10 hidden md:flex" aria-label="Game navigation">
+      <nav className="game-nav-links game-desktop-nav relative z-10" aria-label="Game navigation">
         {navItems.map((item) => (
           <button
             key={item.path}
@@ -136,13 +136,17 @@ const ProfileHeader = ({ showBack }) => {
             onClick={() => navigate(item.path)}
             className={`game-nav-link ${location.pathname === item.path ? 'active' : ''}`}
           >
-            <span>{item.icon}</span>
+            {item.iconImage ? (
+              <img src={item.iconImage} alt={item.iconAlt || item.label} className="game-nav-link-icon" />
+            ) : (
+              <span>{item.icon}</span>
+            )}
             <span>{item.label}</span>
           </button>
         ))}
       </nav>
 
-      <div className="game-nav-actions relative z-10 hidden md:flex">
+      <div className="game-nav-actions game-desktop-nav relative z-10">
 
         <button
           type="button"
@@ -163,7 +167,7 @@ const ProfileHeader = ({ showBack }) => {
         </div>
       </div>
 
-      <div className="game-nav-disconnect-slot relative z-10 hidden md:flex">
+      <div className="game-nav-disconnect-slot game-desktop-nav relative z-10">
         <button
           type="button"
           onClick={() => setShowDisconnectModal(true)}
@@ -189,7 +193,7 @@ const ProfileHeader = ({ showBack }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 w-full bg-doge-darker/95 backdrop-blur-md border-b-2 border-doge-coal/60 shadow-pixel-lg z-40 md:hidden"
+            className="game-compact-dropdown absolute top-full left-0 w-full bg-doge-darker/95 backdrop-blur-md border-b-2 border-doge-coal/60 shadow-pixel-lg z-40"
           >
             <div className="flex flex-col p-4 gap-2 max-w-5xl mx-auto">
               {navItems.map((item) => (
@@ -205,7 +209,11 @@ const ProfileHeader = ({ showBack }) => {
                       : 'text-doge-iron hover:bg-doge-gold/10 hover:text-doge-gold'
                   }`}
                 >
-                  <span className="text-xl">{item.icon}</span>
+                  {item.iconImage ? (
+                    <img src={item.iconImage} alt={item.iconAlt || item.label} className="game-mobile-menu-icon" />
+                  ) : (
+                    <span className="text-xl">{item.icon}</span>
+                  )}
                   <span className="font-heading text-sm">{item.label}</span>
                 </button>
               ))}

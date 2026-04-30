@@ -259,18 +259,18 @@ const LandingPage = () => {
             {/* Features list */}
             <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
               {[
-                "Connect Wallet & Play",
-                "On-Chain Marketplace",
-                "AI Companions",
-                "On-Chain Global Chat",
-                "ZK Proof Leaderboard"
+                "DogeOS Wallet Ready",
+                "On-Chain Gear Market",
+                "AI Companion Loadout",
+                "Global Player Comms",
+                "ZK Verified Rankings",
               ].map((text, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.05, x: 5 }}
-                  className="dogeos-chip panel-wood py-2 px-4 rounded-full border-2 border-[#1a1510] flex items-center justify-center gap-2 shadow-pixel text-[10px] sm:text-xs text-doge-stone font-pixel hover:border-doge-gold transition-colors cursor-default tracking-wide text-center"
+                  className="dogeos-chip hero-feature-chip py-2.5 px-4 rounded-full border-2 flex items-center justify-center gap-2 shadow-pixel text-[12px] sm:text-[13px] text-doge-iron hover:border-doge-gold transition-colors cursor-default tracking-wide text-center"
                 >
-                  <span className="text-doge-emerald drop-shadow-md">✔️</span> {text}
+                  <span className="hero-feature-check">✔</span> {text}
                 </motion.div>
               ))}
             </motion.div>
@@ -619,9 +619,9 @@ const LandingPage = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {[
-            { icon: '🛒', title: 'On-Chain Marketplace', text: 'Buy boats, AI companions and guns securely using your connected wallet.' },
-            { iconImage: '/images/Icon-Logo.png', iconAlt: 'Doge icon', title: 'AI Companions', text: 'Unlock unique AI companions that chat with you during the race and provide specific combat boosts.' },
-            { icon: '💬', title: 'Global Comm Link', text: 'Chat with players around the world in real-time. Show off your loot and strategize with top racers.' },
+            { iconImage: '/images/marketplace-icon-storefront.svg', iconAlt: 'Marketplace storefront', title: 'On-Chain Marketplace', text: 'Buy boats, AI companions and guns securely using your connected wallet.' },
+            { iconImage: '/images/ai-companion-badge.svg', iconAlt: 'AI companion badge', title: 'AI Companions', text: 'Unlock unique AI companions that chat with you during the race and provide specific combat boosts.' },
+            { iconImage: '/images/chat-icon-network.svg', iconAlt: 'Global chat network', title: 'Global Comm Link', text: 'Chat with players around the world in real-time. Show off your loot and strategize with top racers.' },
             { icon: '🔐', title: 'ZK Proof Leaderboards', text: 'Zero-Knowledge proofs ensure every high score is verified without exposing sensitive gameplay data.' }
           ].map((feature, i) => (
             <motion.div
