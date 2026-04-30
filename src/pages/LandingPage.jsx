@@ -210,7 +210,7 @@ const LandingPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-6 md:space-y-8"
+            className="w-full md:w-1/2 flex flex-col items-center text-center space-y-6 md:space-y-8"
           >
             {/* Game Title */}
             <motion.div
@@ -268,7 +268,7 @@ const LandingPage = () => {
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.05, x: 5 }}
-                  className="dogeos-chip panel-wood py-2 px-4 rounded-full border-2 border-[#1a1510] flex items-center gap-2 shadow-pixel text-[10px] sm:text-xs text-doge-stone font-pixel hover:border-doge-gold transition-colors cursor-default tracking-wide"
+                  className="dogeos-chip panel-wood py-2 px-4 rounded-full border-2 border-[#1a1510] flex items-center justify-center gap-2 shadow-pixel text-[10px] sm:text-xs text-doge-stone font-pixel hover:border-doge-gold transition-colors cursor-default tracking-wide text-center"
                 >
                   <span className="text-doge-emerald drop-shadow-md">✔️</span> {text}
                 </motion.div>
@@ -627,7 +627,7 @@ const LandingPage = () => {
             <motion.div
               key={i}
               variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.01, borderColor: '#f0b429' }}
+              whileHover={{ y: -5, scale: 1.01 }}
               className="panel-dark p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4 shadow-pixel border-2 border-transparent transition-all duration-300 cursor-default"
             >
               <div className="landing-feature-icon text-5xl md:text-4xl shrink-0 drop-shadow-lg">

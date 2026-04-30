@@ -8,15 +8,22 @@ const patchDogeOSDogecoinTabKey = (code) => code.replace(
   'dogecoin: { tabKey: "dogecoin", chainKey: "dogecoin" }',
 )
 
-const dogeOSDogecoinTabKeyFix = () => ({
-  name: 'dogeos-dogecoin-tab-key-fix',
+const patchDogeOSModalEmailHandoff = (code) => code.replace(
+  'closeModalBeforeIframe: !0',
+  'closeModalBeforeIframe: !1',
+)
+
+const patchDogeOSSDK = (code) => patchDogeOSModalEmailHandoff(patchDogeOSDogecoinTabKey(code))
+
+const dogeOSSDKFixes = () => ({
+  name: 'dogeos-sdk-fixes',
   enforce: 'pre',
   transform(code, id) {
     if (!id.includes('@dogeos/dogeos-sdk/dist/')) {
       return null
     }
 
-    const fixedCode = patchDogeOSDogecoinTabKey(code)
+    const fixedCode = patchDogeOSSDK(code)
 
     return fixedCode === code ? null : fixedCode
   },
@@ -26,7 +33,7 @@ const dogeOSDogecoinTabKeyFix = () => ({
 export default defineConfig({
   plugins: [
     react(),
-    dogeOSDogecoinTabKeyFix(),
+    dogeOSSDKFixes(),
     nodePolyfills({
       globals: {
         Buffer: true,
@@ -45,7 +52,7 @@ export default defineConfig({
             build.onLoad(
               { filter: /@dogeos\/dogeos-sdk\/dist\/.*\.js$/ },
               async ({ path }) => ({
-                contents: patchDogeOSDogecoinTabKey(await fs.readFile(path, 'utf8')),
+                contents: patchDogeOSSDK(await fs.readFile(path, 'utf8')),
                 loader: 'js',
               }),
             )
