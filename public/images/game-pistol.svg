@@ -1,0 +1,47 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="slide" x1="42" y1="76" x2="206" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D7DEE8"/>
+      <stop offset="0.2" stop-color="#8994A4"/>
+      <stop offset="0.52" stop-color="#3E4653"/>
+      <stop offset="0.82" stop-color="#1E242D"/>
+      <stop offset="1" stop-color="#A9863A"/>
+    </linearGradient>
+    <linearGradient id="barrel" x1="172" y1="75" x2="232" y2="105" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#333B46"/>
+      <stop offset="0.6" stop-color="#151922"/>
+      <stop offset="1" stop-color="#E3AB35"/>
+    </linearGradient>
+    <linearGradient id="grip" x1="102" y1="139" x2="139" y2="224" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5A3322"/>
+      <stop offset="0.5" stop-color="#2A1712"/>
+      <stop offset="1" stop-color="#100A08"/>
+    </linearGradient>
+    <filter id="shadow" x="20" y="42" width="220" height="190" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="7" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M37 112C34.8 112 33 110.2 33 108V90C33 87.8 34.8 86 37 86H163C169.6 86 176 88.1 181.2 92L192 100H218C220.2 100 222 101.8 222 104V117C222 119.2 220.2 121 218 121H182L168 135H87L79 124H51C43.3 124 37 119.7 37 112Z" fill="#11151C"/>
+    <path d="M42 81C42 76.6 45.6 73 50 73H157C168.3 73 179.1 77.2 187.5 84.8L196.7 93H226C228.8 93 231 95.2 231 98V108C231 110.8 228.8 113 226 113H194.5C188.1 113 182 115.5 177.5 120L165 132.5C163.4 134.1 161.2 135 158.9 135H82.8C79.6 135 76.6 133.2 75.2 130.3L69.6 119H50C45.6 119 42 115.4 42 111V81Z" fill="url(#slide)"/>
+    <path d="M50 80H157C165.4 80 173.4 83 179.8 88.4L188.8 96H49V84C49 81.8 47.8 80 50 80Z" fill="#F0F4F8" opacity="0.5"/>
+    <path d="M57 91H145C149.4 91 153 94.6 153 99V104H57V91Z" fill="#576170" opacity="0.55"/>
+    <path d="M164 94H229C232.3 94 235 96.7 235 100V107C235 110.3 232.3 113 229 113H172C168.7 113 166 110.3 166 107V100C166 97.8 165.2 96 164 94Z" fill="url(#barrel)"/>
+    <path d="M219 95H235V112H219V95Z" fill="#E6B643"/>
+    <path d="M229 99H239V109H229V99Z" fill="#080A0F"/>
+    <path d="M54 112H88L96 131H82.5C79.5 131 76.8 129.3 75.5 126.6L70 116H54V112Z" fill="#171C24"/>
+
+    <path d="M92 130H137C141.4 130 145 133.6 145 138V149C145 153.4 141.4 157 137 157H111L101 181H82L93.5 153H92C87.6 153 84 149.4 84 145V138C84 133.6 87.6 130 92 130Z" fill="#101218"/>
+    <path d="M111 150H145L165 211C166.9 216.8 162.6 223 156.5 223H127.5C123.6 223 120.2 220.5 119 216.8L100 157C98.8 153.6 101.4 150 105 150H111Z" fill="url(#grip)"/>
+    <path d="M114 160H139L154 209C154.7 211.2 153.1 213.5 150.8 213.5H132.7C131.2 213.5 129.9 212.5 129.4 211.1L114 160Z" fill="#7B4B2A" opacity="0.7"/>
+    <path d="M122 166H138L141 176H125L122 166Z" fill="#C08A42" opacity="0.35"/>
+    <path d="M128 185H146L149 195H131L128 185Z" fill="#C08A42" opacity="0.25"/>
+
+    <path d="M86 136H118C120.2 136 122 137.8 122 140V145C122 147.2 120.2 149 118 149H98C91.4 149 86 143.6 86 137V136Z" fill="#2A303A"/>
+    <path d="M127 133H158C159.9 133 161.5 134.3 161.9 136.1L164 146H147C136 146 127 137 127 133Z" fill="#0B0D12"/>
+    <path d="M71 82L75 73H95L91 82H71Z" fill="#B6852E"/>
+    <path d="M105 82L109 73H129L125 82H105Z" fill="#202630" opacity="0.7"/>
+    <path d="M139 82L143 73H160L157 82H139Z" fill="#202630" opacity="0.7"/>
+  </g>
+</svg>

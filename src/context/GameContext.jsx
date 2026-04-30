@@ -25,7 +25,7 @@ const DUMMY_COMPANIONS = [
 ];
 
 const DUMMY_GUNS = [
-  { id: 1, name: 'Pistol', damage: 50, fireRate: 90, accuracy: 80, price: 300, rentPrice: 30, owned: true, image: '🔫' },
+  { id: 1, name: 'Pistol', damage: 50, fireRate: 90, accuracy: 80, price: 300, rentPrice: 30, owned: true, image: '/images/game-pistol.svg' },
   { id: 2, name: 'Shotgun', damage: 90, fireRate: 50, accuracy: 60, price: 650, rentPrice: 65, owned: false, image: '💣' },
   { id: 3, name: 'Sniper', damage: 100, fireRate: 40, accuracy: 100, price: 1500, rentPrice: 150, owned: false, image: '🎯' },
 ];
