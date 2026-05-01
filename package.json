@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@dogeos/dogeos-sdk": "^3.0.18",
+    "@dogeos/dogeos-sdk": "3.2.0-beta.4",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
     "ethers": "^6.9.0",
@@ -19,6 +19,10 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
     "three": "^0.183.2"
+  },
+  "overrides": {
+    "@heroui/system": "2.4.23",
+    "@heroui/theme": "2.4.23"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

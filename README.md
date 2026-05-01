@@ -118,6 +118,9 @@ cd Doge-Escape
 # Install dependencies
 npm install
 
+# DogeOS SDK must stay on the approved beta
+npm install @dogeos/dogeos-sdk@3.2.0-beta.4
+
 # Create environment file
 cp .env.example .env
 
@@ -135,6 +138,22 @@ If you use NVM:
 
 ---
 
+## 🔗 DogeOS SDK
+
+Use `@dogeos/dogeos-sdk@3.2.0-beta.4` for DogeOS wallet integration.
+
+This app follows the DogeOS SDK docs and demo setup:
+- `src/App.jsx` wraps the app with `WalletConnectProvider` and passes the DogeOS config.
+- `src/main.jsx` imports `@dogeos/dogeos-sdk/style.css`.
+- `src/context/WalletContext.jsx` uses `useWalletConnect` and `useAccount`.
+- `.env` must include `VITE_DOGEOS_CLIENT_ID` from DogeOS.
+
+References:
+- Docs: https://docs.dogeos.com/en/sdk
+- Demo: https://github.com/DogeOS69/dogeos-sdk-demo
+
+---
+
 ## ⚙️ Environment Variables
 
 Create a `.env` file in the root directory:
@@ -149,6 +168,9 @@ VITE_API_URL=https://your-backend-api.com
 # Blockchain Network
 VITE_CHAIN_ID=1
 VITE_RPC_URL=https://mainnet.infura.io/v3/YOUR_KEY
+
+# DogeOS SDK
+VITE_DOGEOS_CLIENT_ID=YOUR_DOGEOS_CLIENT_ID
 
 # Smart Contract Addresses
 VITE_BOAT_CONTRACT=0x...

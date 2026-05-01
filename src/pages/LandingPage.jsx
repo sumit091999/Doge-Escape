@@ -170,7 +170,7 @@ const LandingPage = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
-                className="lg:hidden flex flex-col gap-1 pt-3 pb-1"
+                className="lg:hidden flex flex-col items-center gap-2 pt-3 pb-1"
               >
                 {[
                   { label: 'How to Play', target: 'how-to-play' },
@@ -184,7 +184,7 @@ const LandingPage = () => {
                       document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' });
                       setMobileMenuOpen(false);
                     }}
-                    className="font-heading text-base text-doge-iron hover:text-doge-gold py-3 px-5 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 text-left border border-transparent hover:border-doge-gold/30 uppercase tracking-wider"
+                    className="font-heading w-full min-h-14 inline-flex items-center justify-center text-center text-base text-doge-iron hover:text-doge-gold py-3 px-5 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 border border-transparent hover:border-doge-gold/30 uppercase tracking-wider"
                   >
                     {item.label}
                   </button>
