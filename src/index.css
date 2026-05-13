@@ -3874,6 +3874,11 @@ body {
   flex-shrink: 0;
 }
 
+#modal-container img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 @media (max-width: 540px) {
   #modal-container .py-3:has(> .font-medium.text-lg) {
     grid-template-columns: 1fr;
