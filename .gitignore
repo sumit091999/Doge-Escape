@@ -60,3 +60,8 @@ coverage/
 # Temp files
 *.tmp
 *.temp
+
+# Private/Documentation
+CONTRIBUTING.md
+DEPLOYMENT.md
+
