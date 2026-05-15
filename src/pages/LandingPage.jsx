@@ -1,733 +1,838 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useWallet } from '../context/WalletContext';
-import { useGame } from '../context/GameContext';
-import DogeHeroScene from '../components/DogeHeroScene';
-import HowToPlayScene from '../components/HowToPlayScene';
-import LeaderboardScene from '../components/LeaderboardScene';
-import FeaturesScene from '../components/FeaturesScene';
-import WarpSpeedScene from '../components/WarpSpeedScene';
-import MarketTreasuryScene from '../components/MarketTreasuryScene';
-import { CompanionShowcaseScene, GamePreviewScene } from '../components/LandingPreviewScenes';
-import ItemVisual from '../components/ItemVisual';
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import fullHero from "../assets/full-hero.png";
+import dogeEscapeLogo from "../assets/DogeEscape-logo.png";
+import oldHeroIcon from "../assets/old.png";
+import ogLogoAsset from "../assets/OG.png";
+import kultLogo from "../assets/kultLogo.png";
+import iconLogo from "../assets/Icon-Logo.png";
+import dogeTrailer from "../assets/Doge-New.mp4";
+import cardFast from "../assets/card-fast.jpg";
+import cardEnemies from "../assets/card-enemies.jpg";
+import cardCoins from "../assets/card-coins.jpg";
+import cardDogeos from "../assets/card-dogeos.jpg";
+import aiCompanion from "../assets/ai-companion.jpg";
+import zeroGAiDoge from "../assets/zero-g-ai-doge.jpg";
+import roboD from "../assets/robo-d.png";
+import { SectionThreeScene } from "../components/SectionThreeScene";
+import { useWallet } from "../context/WalletContext";
 
+const iconPaths = {
+  Youtube: [
+    "M22.5 12.2c0-1.7-.2-3.4-.4-4.3-.2-.9-.9-1.6-1.8-1.9C18.7 5.5 12 5.5 12 5.5s-6.7 0-8.3.5c-.9.3-1.6 1-1.8 1.9-.2.9-.4 2.6-.4 4.3s.2 3.4.4 4.3c.2.9.9 1.6 1.8 1.9 1.6.5 8.3.5 8.3.5s6.7 0 8.3-.5c.9-.3 1.6-1 1.8-1.9.2-.9.4-2.6.4-4.3Z",
+    "m10 9 5.2 3L10 15V9Z",
+  ],
+  Zap: ["M13 2L4 14h7l-1 8 9-12h-7l1-8z"],
+  Check: ["M20 6L9 17l-5-5"],
+  Trophy: ["M8 21h8", "M12 17v4", "M7 4h10v6a5 5 0 0 1-10 0V4z", "M5 6H3v2a4 4 0 0 0 4 4", "M19 6h2v2a4 4 0 0 1-4 4"],
+  Rocket: ["M4.5 16.5c-1 1-1.5 3-1.5 4.5 1.5 0 3.5-.5 4.5-1.5", "M9 15l-3 3", "M14 4c3-2 6-1 6-1s1 3-1 6l-8 8-5-5 8-8z", "M15 9h.01"],
+  Flame: ["M8.5 14.5A3.5 3.5 0 0 0 12 22a7 7 0 0 0 7-7c0-5-4-7-4-11-2.5 1.6-4 4-4 7-1.6-.8-2.3-2.1-2.5-3.5C6.7 9 5 11.3 5 14a7 7 0 0 0 7 8"],
+  Shield: ["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"],
+  Wrench: ["M14.7 6.3a4 4 0 0 0-5 5L3 18v3h3l6.7-6.7a4 4 0 0 0 5-5l-2.4 2.4-2.6-2.6 2-2.8Z"],
+  Sparkles: ["M12 3l1.5 5L18 10l-4.5 2L12 17l-1.5-5L6 10l4.5-2L12 3Z", "M5 3v4", "M3 5h4", "M19 17v4", "M17 19h4"],
+  Crosshair: ["M12 2v4", "M12 18v4", "M2 12h4", "M18 12h4", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"],
+  Plus: ["M12 5v14", "M5 12h14"],
+  Magnet: ["M6 4v8a6 6 0 0 0 12 0V4", "M6 4h4", "M14 4h4", "M6 8h4", "M14 8h4"],
+  Gamepad2: ["M6 12h4", "M8 10v4", "M15 13h.01", "M18 11h.01", "M7 7h10a5 5 0 0 1 4.7 3.4l1.1 3.5a4 4 0 0 1-6.6 4l-1.8-1.9H9.6l-1.8 1.9a4 4 0 0 1-6.6-4l1.1-3.5A5 5 0 0 1 7 7z"],
+  Brain: ["M8 6a3 3 0 0 1 5-2.2A3 3 0 0 1 18 6a3 3 0 0 1 1 5.8A3 3 0 0 1 16 17h-1a3 3 0 0 1-6 0H8a3 3 0 0 1-3-5.2A3 3 0 0 1 8 6z", "M12 4v14", "M8 10h4", "M12 13h4"],
+  Box: ["M21 8l-9-5-9 5 9 5 9-5z", "M3 8v8l9 5 9-5V8", "M12 13v8"],
+  ShieldCheck: ["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", "M9 12l2 2 4-5"],
+  Crown: ["M3 7l4 4 5-7 5 7 4-4v11H3V7z", "M3 18h18"],
+  ChevronRight: ["M9 18l6-6-6-6"],
+  Volume2: ["M11 5 6 9H2v6h4l5 4V5Z", "M15.5 8.5a5 5 0 0 1 0 7", "M18.5 5.5a9 9 0 0 1 0 13"],
+  VolumeX: ["M11 5 6 9H2v6h4l5 4V5Z", "M22 9l-6 6", "M16 9l6 6"],
+  Bot: ["M12 8V4", "M8 4h8", "M6 8h12a2 2 0 0 1 2 2v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a2 2 0 0 1 2-2z", "M9 13h.01", "M15 13h.01", "M9 17h6"],
+};
 
-const LandingPage = () => {
-  const navigate = useNavigate();
-  const { connectWallet, isConnecting, isConnected } = useWallet();
-  const { leaderboard, boats, companions, guns } = useGame();
-  const [particles, setParticles] = useState([]);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [waitingForWallet, setWaitingForWallet] = useState(false);
-  const marketplacePreviewItems = [
-    ...boats.slice(0, 2).map((item) => ({ ...item, type: 'Boat', stat: `${item.speed} Speed` })),
-    ...guns.slice(0, 1).map((item) => ({ ...item, type: 'Weapon', stat: `${item.damage} Damage` })),
+function Icon({ name, size = 24, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {(iconPaths[name] || []).map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  );
+}
+
+const makeIcon = (name) => ({ size, className }) => (
+  <Icon name={name} size={size} className={className} />
+);
+
+const Youtube = makeIcon("Youtube");
+const Zap = makeIcon("Zap");
+const Check = makeIcon("Check");
+const Trophy = makeIcon("Trophy");
+const Rocket = makeIcon("Rocket");
+const Flame = makeIcon("Flame");
+const Shield = makeIcon("Shield");
+const Wrench = makeIcon("Wrench");
+const Sparkles = makeIcon("Sparkles");
+const Crosshair = makeIcon("Crosshair");
+const Plus = makeIcon("Plus");
+const Magnet = makeIcon("Magnet");
+const Gamepad2 = makeIcon("Gamepad2");
+const Brain = makeIcon("Brain");
+const Box = makeIcon("Box");
+const ShieldCheck = makeIcon("ShieldCheck");
+const Crown = makeIcon("Crown");
+const ChevronRight = makeIcon("ChevronRight");
+const Volume2 = makeIcon("Volume2");
+const VolumeX = makeIcon("VolumeX");
+const Bot = makeIcon("Bot");
+
+const navItems = [
+  { label: "GAMEPLAY", href: "#gameplay" },
+  { label: "FEATURES", href: "#features" },
+  { label: "RANK", href: "#leaderboard" },
+];
+
+function OGLogo({ className = "inline h-5 w-auto align-[-0.2em]" }) {
+  return <img src={ogLogoAsset} alt="OG" className={className} />;
+}
+
+const zgColorMap = {
+  purple: { border: "border-purple-400/40", bg: "from-purple-950/40 to-black", title: "text-purple-400", icon: "text-purple-300 bg-purple-500/10 border-purple-400/40", glow: "shadow-[0_0_30px_rgba(168,85,247,0.2)]" },
+  blue: { border: "border-sky-400/40", bg: "from-sky-950/40 to-black", title: "text-sky-400", icon: "text-sky-300 bg-sky-500/10 border-sky-400/40", glow: "shadow-[0_0_30px_rgba(56,189,248,0.2)]" },
+  green: { border: "border-green-400/40", bg: "from-green-950/40 to-black", title: "text-green-400", icon: "text-green-300 bg-green-500/10 border-green-400/40", glow: "shadow-[0_0_30px_rgba(74,222,128,0.2)]" },
+};
+
+const podiumMap = {
+  yellow: {
+    border: "border-yellow-400/60",
+    glow: "shadow-[0_0_50px_rgba(255,200,0,0.25)]",
+    badge: "from-yellow-300 to-amber-600",
+    name: "text-yellow-300",
+    avatarBg: "from-yellow-500/30 to-amber-700/20 border-yellow-400/40",
+    coin: "text-yellow-400",
+    rewardBg: "border-yellow-400/40",
+    rewardText: "text-yellow-300",
+  },
+  purple: {
+    border: "border-purple-400/60",
+    glow: "shadow-[0_0_50px_rgba(168,85,247,0.25)]",
+    badge: "from-purple-400 to-fuchsia-700",
+    name: "text-purple-300",
+    avatarBg: "from-purple-500/30 to-fuchsia-700/20 border-purple-400/40",
+    coin: "text-purple-400",
+    rewardBg: "border-purple-400/40",
+    rewardText: "text-purple-300",
+  },
+  orange: {
+    border: "border-orange-400/60",
+    glow: "shadow-[0_0_50px_rgba(255,120,40,0.25)]",
+    badge: "from-orange-400 to-red-700",
+    name: "text-orange-300",
+    avatarBg: "from-orange-500/30 to-red-700/20 border-orange-400/40",
+    coin: "text-orange-400",
+    rewardBg: "border-orange-400/40",
+    rewardText: "text-orange-300",
+  },
+};
+
+function Nav({ onConnect, isConnecting }) {
+  return (
+    <header className="absolute inset-x-0 top-5 z-20 mx-auto flex max-w-7xl items-center justify-between bg-transparent px-4 py-3 sm:top-3 sm:px-6">
+      <a href="#" className="flex items-center">
+        <img
+          src={dogeEscapeLogo}
+          alt="Doge Escape"
+          width={900}
+          height={900}
+          className="h-10 w-10 object-contain sm:h-14 sm:w-14"
+        />
+      </a>
+      <nav className="hidden gap-6 text-xs font-bold uppercase tracking-widest text-yellow-200/90 lg:flex">
+        {navItems.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="premium-link hover:text-yellow-400"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      <div className="hidden items-center gap-3 sm:flex">
+        <span className="premium-cta-shell premium-cta-shell-primary">
+          <button
+            type="button"
+            onClick={onConnect}
+            className="premium-cta premium-cta-primary clip-arcade-button font-pixel shrink-0 bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-500 px-3 py-2 text-[8px] uppercase tracking-[0.06em] text-black transition min-[380px]:text-[9px] sm:px-4 sm:text-[11px]"
+          >
+            <span className="premium-cta-label">{isConnecting ? "Connecting..." : "Connect Wallet"}</span>
+          </button>
+        </span>
+      </div>
+    </header>
+  );
+}
+
+function Hero({ onWatchTrailer, onConnect, isConnecting }) {
+  return (
+    <section
+      className="relative min-h-[660px] overflow-hidden bg-cover bg-[64%_top] bg-no-repeat pt-28 sm:min-h-[720px] sm:bg-top sm:pt-28 lg:min-h-[760px] lg:pt-32"
+      style={{ backgroundImage: `url(${fullHero})` }}
+    >
+
+      <SectionThreeScene variant="hero" className="z-0 opacity-70 mix-blend-screen" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 pb-10 pt-8 sm:px-6 sm:pb-16 sm:pt-10 lg:items-center lg:pt-12">
+        <div className="relative max-w-[92vw] sm:max-w-xl">
+          <h1 className="font-doge-title text-[2.55rem] leading-[0.95] min-[380px]:text-5xl sm:text-7xl md:text-[6.25rem]">
+            DOG<span className="relative">E
+              <span className="absolute -right-2 -top-2 text-xl sm:-top-3 sm:text-2xl">🐾</span>
+            </span>
+          </h1>
+          <h2 className="mt-3 font-doge-escape text-[1.95rem] leading-none min-[380px]:text-4xl sm:mt-4 sm:text-5xl md:text-6xl">
+            ESCAPE
+          </h2>
+          <p className="mt-7 max-w-[18rem] font-pixel-display text-[10px] leading-relaxed text-primary drop-shadow-[2px_2px_0_oklch(0.13_0.04_255)] min-[380px]:text-xs sm:mt-8 sm:max-w-none sm:text-base">
+            BREAK FREE. SECURE THE DOGE.
+          </p>
+          <p className="font-pixel-body mt-4 max-w-[18rem] text-lg leading-snug text-foreground/85 min-[380px]:text-xl sm:max-w-md sm:text-2xl">
+            A wild arcade adventure on DogeOS. Survive the waves, defeat enemies,
+            collect coins and escape!
+          </p>
+          <div className="mt-8 flex flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <span className="premium-cta-shell premium-cta-shell-primary w-full min-[460px]:w-auto">
+              <button
+                type="button"
+                onClick={onConnect}
+                className="premium-cta premium-cta-primary clip-arcade-button font-pixel inline-flex min-h-[48px] w-full items-center justify-center gap-3 bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-500 px-5 py-3 text-[10px] uppercase tracking-[0.08em] text-black transition sm:min-h-[52px] sm:w-auto sm:px-6 sm:py-4 sm:text-[12px]"
+              >
+                <span className="premium-cta-label">{isConnecting ? "Connecting..." : "Connect Wallet"}</span>
+              </button>
+            </span>
+            <span className="premium-cta-shell premium-cta-shell-secondary w-full min-[460px]:w-auto">
+              <button
+                type="button"
+                onClick={onWatchTrailer}
+                className="premium-cta premium-cta-secondary trailer-glow clip-arcade-button w-full bg-yellow-400/75 p-[2px] transition sm:w-auto"
+              >
+                <span className="premium-cta-label clip-arcade-button font-pixel inline-flex min-h-[48px] w-full items-center justify-center gap-3 bg-black/90 px-5 py-3 text-[10px] uppercase tracking-[0.08em] text-yellow-100 sm:min-h-[52px] sm:px-6 sm:py-4 sm:text-[12px]">
+                  Watch Trailer <Youtube size={16} className="text-destructive" />
+                </span>
+              </button>
+            </span>
+          </div>
+          <div className="mt-8 inline-flex items-center gap-2 font-pixel-display text-[8px] text-foreground/70 sm:text-[10px]">
+            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full border-2 border-primary bg-primary shadow-[2px_2px_0_oklch(0.13_0.04_255)]">
+              <img
+                src={oldHeroIcon}
+                alt=""
+                width={1024}
+                height={1024}
+                className="h-full w-full object-cover"
+              />
+            </span>
+            BUILT FOR DOGEOS
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Marquee() {
+  const items = [
+    { kind: "dogeos" },
+    { kind: "og" },
+    { kind: "kult" },
+    { kind: "dogeos" },
+    { kind: "og" },
+    { kind: "kult" },
   ];
-  const companionPreviewItems = companions.slice(0, 3);
-  const floatingLoot = [
-    { icon: '💰', className: 'left-[8%] top-[24%]', delay: 0 },
-    { icon: '💎', className: 'right-[10%] top-[30%]', delay: 0.8 },
-    { icon: '🚤', className: 'left-[16%] bottom-[28%]', delay: 1.4 },
-    { icon: '⚡', className: 'right-[18%] bottom-[24%]', delay: 2.1 },
-  ];
+  return (
+    <div className="relative z-20 overflow-hidden border-y-2 border-primary/30 bg-[oklch(0.1_0.04_255)] py-3 sm:py-4">
+      <div className="marquee-track flex w-max gap-6 whitespace-nowrap sm:gap-10">
+        {[...items, ...items].map((item, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-6 font-pixel-display text-[10px] text-foreground/90 sm:gap-10 sm:text-xs"
+          >
+            {item.kind === "dogeos" && (
+              <span>
+                BUILT ON <span className="text-primary">DOGEOS</span>
+              </span>
+            )}
+            {item.kind === "og" && (
+              <span className="inline-flex items-center gap-3">
+                POWERED BY
+                <OGLogo className="h-5 w-auto sm:h-6" />
+              </span>
+            )}
+            {item.kind === "kult" && (
+              <span className="inline-flex items-center gap-3">
+                BUILT BY
+                <img src={kultLogo} alt="Kult Games" width={143} height={50} className="h-4 w-auto object-contain sm:h-5" />
+              </span>
+            )}
+            <Zap size={16} className="text-primary" fill="currentColor" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  useEffect(() => {
-    // Generate random particles
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 3,
-    }));
-    setParticles(newParticles);
-  }, []);
+function Teaser() {
+  const teaserVideoRef = useRef(null);
+  const [teaserMuted, setTeaserMuted] = useState(true);
+  const [teaserVolume, setTeaserVolume] = useState(0.65);
+  const [isTeaserAudioOpen, setIsTeaserAudioOpen] = useState(false);
 
-  // Removed automatic redirection to allow landing on this page even if connected
-  // users can manually click "Play" or "Connect" to go to Home.
-  /*
-  useEffect(() => {
-    if (isConnected) {
-      navigate('/Home');
-    }
-  }, [isConnected, navigate]);
-  */
-
-  useEffect(() => {
-    if (waitingForWallet && isConnected) {
-      navigate('/Home');
-    }
-  }, [waitingForWallet, isConnected, navigate]);
-
-  const handleConnect = async () => {
-    setWaitingForWallet(true);
-    const account = await connectWallet();
-    if (account) {
-      navigate('/Home');
-    }
-  };
-
-  // Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
-
-  const floatingVariants = {
-    animate: {
-      y: [0, -10, 0],
-      rotate: [-1, 1, -1],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
+  const syncTeaserAudio = (volume, muted) => {
+    const video = teaserVideoRef.current;
+    if (!video) return;
+    video.volume = volume;
+    video.muted = muted;
+    if (!muted) {
+      video.play().catch(() => undefined);
     }
   };
 
   return (
-    <div className="w-full min-h-screen bg-doge-darker overflow-x-hidden text-white font-pixel pb-0">
-
-
-      {/* 1. Hero Section */}
-      <div className="pb-8 md:pb-12 px-4 bg-doge-coal bg-opacity-40 border-b-2 border-doge-dark shadow-inset relative overflow-hidden">
-        {/* Three.js 3D Background */}
-        <DogeHeroScene />
-
-        {/* Landing Nav Bar */}
-        <nav className="relative z-20 w-full pt-3 pb-2">
-          <div className="max-w-[1440px] mx-auto px-4 md:px-8 py-2.5">
-            <div className="relative flex items-center w-full">
-              {/* Logo Left - Always visible */}
-              <div className="flex items-center gap-3 shrink-0">
-                <img src="/images/DogeEscape-logo.png" alt="DogeEscape" className="w-11 h-11 object-contain" />
-                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-full border border-doge-gold/20 bg-[#1a1510]/60 backdrop-blur-md">
-                  <div className="relative flex items-center justify-center w-3 h-3">
-                    <div className="w-full h-full rounded-full bg-[#3e5a2a] opacity-50" />
-                    <div className="absolute w-1.5 h-1.5 rounded-full bg-[#64b03a] shadow-[0_0_8px_#64b03a]" />
-                  </div>
-                  <span className="text-[9px] font-bold text-doge-gold tracking-widest whitespace-nowrap uppercase leading-none mt-0.5">
-                    POWERED BY DogeOS
-                  </span>
-                </div>
-              </div>
-
-              {/* Desktop: Centered inline buttons */}
-              <div className="hidden lg:flex flex-1 items-center justify-center z-30">
-                <div className="flex items-center gap-3 xl:gap-8 pointer-events-auto">
-                  {[
-                    { label: 'How to Play', target: 'how-to-play' },
-                    { label: 'Marketplace', target: 'marketplace' },
-                    { label: 'Companions', target: 'companions' },
-                    { label: 'Leaderboard', target: 'leaderboard' },
-                  ].map((item) => (
-                    <motion.button
-                      key={item.target}
-                      whileHover={{ scale: 1.1, color: '#f0b429', textShadow: '0 0 15px rgba(240, 180, 41, 0.6)' }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' })}
-                      className="font-pixel text-[11px] xl:text-sm text-doge-iron px-2 xl:px-4 py-2 transition-all duration-200 whitespace-nowrap tracking-widest uppercase cursor-pointer"
-                    >
-                      {item.label}
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile: hamburger icon right */}
-              <div className="flex lg:hidden items-center ml-auto">
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="w-10 h-10 rounded-full border-2 border-doge-gold/50 bg-doge-darker/80 flex items-center justify-center hover:border-doge-gold transition-colors duration-200"
-                  aria-label="Toggle menu"
-                >
-                  <div className="flex flex-col items-center justify-center gap-[3px]">
-                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
-                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-                    <span className={`block w-4 h-[2px] bg-doge-gold transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Mobile dropdown */}
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className="lg:hidden flex flex-col items-center gap-2 pt-3 pb-1"
-              >
-                {[
-                  { label: 'How to Play', target: 'how-to-play' },
-                  { label: 'Marketplace', target: 'marketplace' },
-                  { label: 'Companions', target: 'companions' },
-                  { label: 'Leaderboard', target: 'leaderboard' },
-                ].map((item) => (
-                  <button
-                    key={item.target}
-                    onClick={() => {
-                      document.getElementById(item.target)?.scrollIntoView({ behavior: 'smooth' });
-                      setMobileMenuOpen(false);
-                    }}
-                    className="font-heading w-full min-h-14 inline-flex items-center justify-center text-center text-base text-doge-iron hover:text-doge-gold py-3 px-5 rounded-lg hover:bg-doge-gold/10 transition-all duration-200 border border-transparent hover:border-doge-gold/30 uppercase tracking-wider"
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </div>
-        </nav>
-
-        <div className="landing-nav-divider relative z-20" aria-hidden="true" />
-
-        {/* Animated Sparkles */}
-        <div className="absolute top-10 left-10 torch"></div>
-        <div className="absolute top-10 right-10 torch"></div>
-        <div className="absolute bottom-10 left-1/4 torch"></div>
-        <div className="absolute bottom-10 right-1/4 torch"></div>
-
-        {/* Main Content */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-6 md:gap-12">
-
-          {/* Left Column: Text & CTA */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="w-full md:w-1/2 flex flex-col items-center text-center space-y-6 md:space-y-8"
-          >
-            {/* Game Title */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ scale: 1.02, rotate: -1 }}
-              className="landing-logo-stack cursor-default"
-            >
-              <h1 className="landing-title-main">
-                <span>DOGE</span>
-                <span>ESCAPE</span>
-              </h1>
-              <p className="landing-title-kicker">Gaming dapp built for much wow</p>
-            </motion.div>
-
-            {/* Icons Row */}
-            <motion.div variants={itemVariants} className="flex gap-4">
-              {['🚤', '💎', '⚡'].map((emoji, i) => (
-                <motion.div
-                  key={i}
-                  variants={floatingVariants}
-                  animate="animate"
-                  className="w-14 h-14 panel-stone flex items-center justify-center text-3xl rounded-xl shadow-pixel"
-                >
-                  <span>{emoji}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Tagline */}
-            <motion.div
-              variants={itemVariants}
-              className="dogeos-copy panel-dark p-4 rounded-xl border-2 border-doge-coal shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] inline-block text-doge-iron text-sm md:text-base font-bold w-full md:w-auto font-pixel"
-            >
-              Race through blocky waters, collect diamonds, and escape the chaos on DogeOS.
-            </motion.div>
-
-            {/* <motion.div variants={itemVariants} className="landing-partner-strip">
-              <img src="/images/mydoge-assets/Square_Logo.png" alt="DogeEscape square logo" />
-              <div>
-                <span>MyDoge-ready visual set</span>
-                <strong>Clean logo, simple cards, readable banners</strong>
-              </div>
-              <small>Gaming</small>
-            </motion.div> */}
-
-            {/* Features list */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              {[
-                "DogeOS Wallet Ready",
-                "On-Chain Gear Market",
-                "AI Companion Loadout",
-                "Global Player Comms",
-                "ZK Verified Rankings",
-              ].map((text, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.05, x: 5 }}
-                  className="dogeos-chip hero-feature-chip py-2.5 px-4 rounded-full border-2 flex items-center justify-center gap-2 shadow-pixel text-[12px] sm:text-[13px] text-doge-iron hover:border-doge-gold transition-colors cursor-default tracking-wide text-center"
-                >
-                  <span className="hero-feature-check">✔</span> {text}
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Action Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col xl:flex-row gap-4 w-full pt-2">
-              <button
-                onClick={handleConnect}
-                disabled={isConnecting}
-                className="btn-primary connect-wallet-bright landing-wallet-button flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm 2xl:text-base font-pixel group whitespace-nowrap py-3 sm:py-4"
-              >
-                {isConnecting ? (
-                  <span className="animate-pulse">Connecting...</span>
-                ) : (
-                  <>
-                    <motion.span
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                      className="inline-block"
-                    >
-                      🎮
-                    </motion.span>
-                    Connect Wallet
-                  </>
-                )}
-              </button>
-              <button
-                className="btn-secondary landing-wallet-button flex-1 shadow-pixel flex items-center justify-center gap-2 text-xs sm:text-sm font-pixel group"
-                onClick={() => document.getElementById('gameplay-preview')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <span>Watch Trailer</span>
-                <motion.span
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1 }}
-                  className="inline-block"
-                >
-                  ▶
-                </motion.span>
-              </button>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Column: Logo Image */}
-          <motion.div
-            initial={{ x: 50, opacity: 0, rotate: 2 }}
-            animate={{ x: 0, opacity: 1, rotate: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
-            className="landing-hero-logo-wrap w-full md:w-1/2 flex justify-center mt-0 md:mt-0"
-          >
-            <motion.img
-              animate={{ y: [0, -8, 0], rotate: [-1, 1, -1] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              src="/images/DogeEscape-logo.png"
-              alt="DogeEscape logo"
-              className="landing-hero-logo w-full max-w-[280px] sm:max-w-md md:max-w-xl h-auto"
-            />
-          </motion.div>
-        </div>
-      </div>
-      {/* End Hero Section */}
-
-      {/* Gameplay Trailer Section */}
-      <div id="gameplay-preview" className="pt-8 pb-6 md:pt-12 md:pb-8 px-4 w-full relative overflow-hidden">
-        <GamePreviewScene />
-        <div className="text-center mb-8 relative z-10 max-w-5xl mx-auto">
-          <p className="dogeos-label mx-auto mb-2">DogeEscape Preview</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white text-shadow-pixel flex flex-wrap items-center justify-center gap-3 font-heading">
-            See It <span className="text-doge-gold bg-doge-coal/60 border-2 border-doge-dark px-4 py-1 rounded-xl">In Action</span>
-          </h2>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="gameplay-video-frame w-full max-w-5xl mx-auto relative z-10 rounded-3xl overflow-hidden border-4 border-doge-stone shadow-pixel-lg bg-doge-darker"
-        >
+    <section id="gameplay" className="relative mx-auto max-w-[92rem] overflow-hidden px-4 pb-14 pt-14 sm:px-6 sm:pb-20 sm:pt-20 md:pt-24 xl:px-8">
+      <SectionThreeScene variant="teaser" className="z-0 opacity-45 mix-blend-screen" />
+      <div className="relative z-10 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-center lg:gap-10 xl:grid-cols-[1.45fr_0.55fr]">
+        <div className="pixel-border scanlines group relative aspect-video overflow-hidden rounded-md">
           <video
-            src="/videos/gameplay.mp4"
+            ref={teaserVideoRef}
+            src={dogeTrailer}
+            aria-label="Doge Escape gameplay teaser"
+            width={1024}
+            height={768}
             autoPlay
+            muted={teaserMuted}
             loop
-            muted
             playsInline
-            className="gameplay-video"
+            preload="metadata"
+            onLoadedMetadata={() => syncTeaserAudio(teaserVolume, teaserMuted)}
+            className="h-full w-full object-cover"
           />
-          {/* Subtle inner shadow overlay */}
-          <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.6)] pointer-events-none rounded-3xl"></div>
-        </motion.div>
-      </div>
-
-      {/* 2. How to Play Section */}
-      <div id="how-to-play" className="pt-6 pb-8 md:pt-7 md:pb-10 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
-        {/* 3D Background */}
-        <HowToPlayScene />
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">How to Play? 🎮</h2>
-          <p className="dogeos-copy text-doge-iron md:text-lg max-w-2xl mx-auto font-pixel">Fast, simple, and rewarding. Get into the race and claim your loot.</p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 relative"
-        >
-          {[
-            { iconImage: '/images/old.png', title: '1. Connect', text: 'Link your Doge wallet to access your NFTs, coins, and stats automatically.' },
-            { icon: '🚤', title: '2. Equip', text: 'Choose your Boat to race and your AI Companion to give you combat buffs, weapons to kill enemies.' },
-            { icon: '💎', title: '3. Escape', text: 'Dodge obstacles, kill enemies, grab rewards, and secure the highest score to dominate.' }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className={`p-6 rounded-2xl shadow-pixel relative cursor-default ${i % 2 === 0 ? 'panel-wood' : 'panel-stone'}`}
+          <div className="absolute bottom-3 right-3 z-10 flex max-w-[calc(100%-1.5rem)] items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              aria-label="Open teaser volume controls"
+              onClick={() => setIsTeaserAudioOpen(!isTeaserAudioOpen)}
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border-2 border-primary/70 bg-card text-primary shadow-[3px_3px_0_oklch(0.1_0.04_255)] transition hover:bg-primary hover:text-primary-foreground sm:h-12 sm:w-12"
             >
-              <div className="w-16 h-16 bg-doge-darker border-2 border-doge-coal rounded-xl flex items-center justify-center text-3xl mb-4 shadow-pixel overflow-hidden">
-                {item.iconImage ? <img src={item.iconImage} alt={item.title} className="w-full h-full object-cover" /> : item.icon}
+              {teaserMuted || teaserVolume === 0 ? <VolumeX size={22} /> : <Volume2 size={22} />}
+            </button>
+            {isTeaserAudioOpen && (
+              <div className="flex items-center gap-3 rounded-sm border-2 border-primary/50 bg-[oklch(0.08_0.03_260_/_0.9)] px-3 py-2 shadow-[3px_3px_0_oklch(0.1_0.04_255)]">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={teaserMuted ? 0 : teaserVolume}
+                  onChange={(event) => {
+                    const v = Number(event.target.value);
+                    setTeaserVolume(v);
+                    setTeaserMuted(v === 0);
+                    syncTeaserAudio(v, v === 0);
+                  }}
+                  className="h-2 w-20 accent-[oklch(0.85_0.18_85)] sm:w-32"
+                />
               </div>
-              <h3 className="text-xl text-doge-gold font-bold mb-2">{item.title}</h3>
-              <p className="text-doge-stone text-sm">{item.text}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* Marketplace Preview Section */}
-      <div id="marketplace" className="pt-12 pb-12 px-4 md:px-8 max-w-6xl mx-auto relative overflow-hidden scroll-mt-16">
-        <MarketTreasuryScene />
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 relative z-10"
-        >
-          <p className="dogeos-label mx-auto mb-2">DogeOS Marketplace</p>
-          <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Gear Up Before The Run</h2>
-          <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Preview boats and weapons built for speed, survival, and clean leaderboard climbs.</p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10"
-        >
-          {marketplacePreviewItems.map((item) => (
-            <motion.div
-              key={`${item.type}-${item.id}`}
-              variants={itemVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="landing-showcase-card panel-dark p-5 rounded-2xl shadow-pixel border-2 border-doge-coal cursor-default"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="w-16 h-16 bg-doge-darker border-2 border-doge-gold rounded-xl flex items-center justify-center text-4xl shadow-pixel">
-                  <ItemVisual item={item} imageClassName="h-12 w-12 object-contain" />
-                </div>
-                <span className="bg-doge-gold text-doge-darker text-xs font-bold px-3 py-1 rounded-lg">{item.type}</span>
-              </div>
-              <h3 className="mt-5 text-xl text-doge-gold font-bold">{item.name}</h3>
-              <p className="mt-2 text-sm text-doge-iron">{item.stat}</p>
-              <div className="mt-5 flex items-center justify-between border-t border-doge-coal pt-4">
-                <span className="text-doge-stone text-xs uppercase tracking-wider">Unlock</span>
-                <strong className="text-doge-gold flex items-center gap-2">
-                  <span>💰</span>
-                  {item.price.toLocaleString()}
-                </strong>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* AI Companion Showcase Section */}
-      <div id="companions" className="pt-12 pb-14 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-hidden scroll-mt-16">
-        <CompanionShowcaseScene />
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-10"
-          >
-            <p className="dogeos-label mx-auto mb-2">DogeOS Companions</p>
-            <h2 className="text-3xl md:text-5xl text-white font-bold text-shadow-pixel mb-4 font-heading">Choose Your AI Companion</h2>
-            <p className="text-doge-iron md:text-lg max-w-2xl mx-auto">Each companion brings a different edge into the chaos, from combat pressure to clutch movement.</p>
-          </motion.div>
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {companionPreviewItems.map((companion) => (
-              <motion.div
-                key={companion.id}
-                variants={itemVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="landing-showcase-card panel-wood p-5 rounded-2xl shadow-pixel border-2 border-doge-coal text-center cursor-default"
-              >
-                <div className="mx-auto w-20 h-20 bg-doge-darker border-2 border-doge-gold rounded-xl flex items-center justify-center text-5xl shadow-pixel">
-                  <ItemVisual item={companion} imageClassName="h-16 w-16 object-contain" />
-                </div>
-                <h3 className="mt-5 text-xl text-doge-gold font-bold">{companion.name}</h3>
-                <p className="mt-2 text-doge-iron text-sm font-bold">{companion.ability}</p>
-                <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-                  <div className="bg-doge-darker/70 border border-doge-coal rounded-lg p-3">
-                    <span className="block text-doge-stone text-xs">Damage</span>
-                    <strong className="text-doge-gold">{companion.damage}</strong>
-                  </div>
-                  <div className="bg-doge-darker/70 border border-doge-coal rounded-lg p-3">
-                    <span className="block text-doge-stone text-xs">Defense</span>
-                    <strong className="text-doge-gold">{companion.defense}</strong>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* 3. Top Scorers Section */}
-      <div id="leaderboard" className="pt-10 pb-14 md:pt-20 md:pb-28 px-4 bg-doge-coal bg-opacity-40 border-y-2 border-doge-dark shadow-inset relative overflow-x-hidden overflow-y-visible scroll-mt-16">
-        {/* 3D Background */}
-        <LeaderboardScene compact />
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">🏆 Weekly Toppers</h2>
-            <p className="text-doge-iron">The legendary Doges dominating the blocky waters.</p>
-          </motion.div>
-
-          <div className="flex flex-col md:flex-row flex-wrap items-end justify-center gap-10 md:gap-6 mt-10">
-            {/* 2nd Place */}
-            {leaderboard.length >= 2 && (
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                whileHover={{ y: -10 }}
-                className="w-full md:w-[30%] order-2 md:order-1 flex flex-col items-center"
-              >
-                <div className="w-20 h-20 bg-doge-dark border-4 border-doge-iron rounded-full shadow-[0_0_20px_rgba(160,160,160,0.4)] overflow-hidden mb-4 z-10 bg-white">
-                  {leaderboard[1].avatar.startsWith('/') ? <img src={leaderboard[1].avatar} alt="avatar" /> : <span className="text-4xl flex items-center justify-center w-full h-full">{leaderboard[1].avatar}</span>}
-                </div>
-                <div className="panel-stone w-full pt-12 pb-6 px-4 rounded-t-2xl border-t-4 border-doge-iron text-center -mt-16 h-40 flex flex-col justify-end relative shadow-pixel-lg">
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 text-2xl">🥈</div>
-                  <h3 className="text-lg font-bold text-doge-iron truncate">{leaderboard[1].username}</h3>
-                  <p className="text-doge-emerald font-bold">{leaderboard[1].score.toLocaleString()}</p>
-                </div>
-              </motion.div>
-            )}
-
-            {/* 1st Place */}
-            {leaderboard.length >= 1 && (
-              <motion.div
-                initial={{ y: 80, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                whileHover={{ y: -10 }}
-                className="w-full md:w-[30%] order-1 md:order-2 flex flex-col items-center"
-              >
-                <div className="w-24 h-24 bg-doge-dark border-4 border-doge-gold rounded-full shadow-[0_0_30px_rgba(240,180,41,0.6)] overflow-hidden mb-4 z-10 bg-white">
-                  {leaderboard[0].avatar.startsWith('/') ? <img src={leaderboard[0].avatar} alt="avatar" className="w-full h-full object-cover" /> : <span className="text-5xl flex items-center justify-center w-full h-full">{leaderboard[0].avatar}</span>}
-                </div>
-                <div className="panel-wood w-full pt-14 pb-8 px-4 rounded-t-2xl border-t-4 border-doge-gold text-center -mt-20 h-48 flex flex-col justify-end relative shadow-pixel-lg" style={{ boxShadow: '0 -10px 30px rgba(240,180,41,0.3)' }}>
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="absolute top-2 left-1/2 -translate-x-1/2 text-3xl"
-                  >
-                    🥇
-                  </motion.div>
-                  <h3 className="text-xl font-bold text-doge-gold truncate">{leaderboard[0].username}</h3>
-                  <p className="text-xl text-doge-emerald font-bold">{leaderboard[0].score.toLocaleString()}</p>
-                </div>
-              </motion.div>
-            )}
-
-            {/* 3rd Place */}
-            {leaderboard.length >= 3 && (
-              <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ y: -10 }}
-                className="w-full md:w-[30%] order-3 md:order-3 flex flex-col items-center"
-              >
-                <div className="w-16 h-16 bg-doge-dark border-4 border-doge-stone rounded-full shadow-[0_0_15px_rgba(139,115,85,0.4)] overflow-hidden mb-4 z-10 bg-white">
-                  {leaderboard[2].avatar.startsWith('/') ? <img src={leaderboard[2].avatar} alt="avatar" className="w-full h-full object-cover" /> : <span className="text-3xl flex items-center justify-center w-full h-full">{leaderboard[2].avatar}</span>}
-                </div>
-                <div className="panel-minecraft w-full pt-10 pb-6 px-4 rounded-t-2xl border-t-4 border-doge-stone text-center -mt-12 h-32 flex flex-col justify-end relative shadow-pixel">
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xl">🥉</div>
-                  <h3 className="text-base font-bold text-doge-stone truncate">{leaderboard[2].username}</h3>
-                  <p className="text-doge-emerald font-bold">{leaderboard[2].score.toLocaleString()}</p>
-                </div>
-              </motion.div>
             )}
           </div>
         </div>
-      </div>
-
-      {/* 4. Features Section */}
-      <div className="pt-12 pb-20 px-4 max-w-6xl mx-auto relative overflow-hidden">
-        {/* 3D Background */}
-        <FeaturesScene />
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-5xl text-doge-gold font-bold mb-4 text-shadow-pixel font-heading">Game Features 🚀</h2>
-          <p className="dogeos-copy text-doge-iron md:text-lg max-w-2xl mx-auto font-pixel">Fully integrated with the DogeOS game layer and Doge Blockchain ownership.</p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
-          {[
-            { iconImage: '/images/marketplace-icon-storefront.svg', iconAlt: 'Marketplace storefront', title: 'On-Chain Marketplace', text: 'Buy boats, AI companions and guns securely using your connected wallet.' },
-            { iconImage: '/images/ai-companion-badge.svg', iconAlt: 'AI companion badge', title: 'AI Companions', text: 'Unlock unique AI companions that chat with you during the race and provide specific combat boosts.' },
-            { iconImage: '/images/chat-icon-network.svg', iconAlt: 'Global chat network', title: 'Global Comm Link', text: 'Chat with players around the world in real-time. Show off your loot and strategize with top racers.' },
-            { icon: '🔐', title: 'ZK Proof Leaderboards', text: 'Zero-Knowledge proofs ensure every high score is verified without exposing sensitive gameplay data.' }
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.01 }}
-              className="panel-dark p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4 shadow-pixel border-2 border-transparent transition-all duration-300 cursor-default"
-            >
-              <div className="landing-feature-icon text-5xl md:text-4xl shrink-0 drop-shadow-lg">
-                {feature.iconImage ? (
-                  <img src={feature.iconImage} alt={feature.iconAlt} />
-                ) : (
-                  feature.icon
-                )}
-              </div>
-              <div>
-                <h4 className="text-xl md:text-lg text-doge-gold font-bold">{feature.title}</h4>
-                <p className="text-sm text-doge-stone mt-2">{feature.text}</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* 5. Final CTA */}
-      <div className="pt-14 pb-14 md:pt-24 md:pb-24 px-4 text-center relative overflow-hidden">
-        {/* 3D Background */}
-        <WarpSpeedScene />
-
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          className="max-w-2xl mx-auto space-y-8 relative z-10"
-        >
-          <h2 className="text-4xl md:text-5xl text-doge-gold font-bold text-shadow-pixel font-heading">Ready to Escape?</h2>
-          <p className="dogeos-copy text-doge-iron md:text-lg font-pixel">Your DogeOS run is ready. Connect your wallet and start the next escape.</p>
-          <button
-            onClick={handleConnect}
-            disabled={isConnecting}
-            className="btn-primary connect-wallet-bright cta-play-now text-lg md:text-2xl px-10 py-5 animate-glow inline-block"
-          >
-            <span className="cta-spark cta-spark-one"></span>
-            <span className="cta-spark cta-spark-two"></span>
-            <span className="cta-spark cta-spark-three"></span>
-            <span className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap">
-              {isConnecting ? (
-                <span className="flex items-center gap-2">
-                  <span className="animate-pulse">Connecting</span>
-                  <span className="animate-bounce">.</span>
-                  <span className="animate-bounce delay-100">.</span>
-                  <span className="animate-bounce delay-200">.</span>
-                </span>
-              ) : (
-                <>
-                  <span>🎮</span>
-                  <span>Connect Wallet </span>
-                </>
-              )}
-            </span>
-          </button>
-        </motion.div>
-      </div>
-
-      {/* Footer */}
-      <footer className="w-full bg-[#0a0805] relative">
-        {/* Hazard Stripe */}
-        <div className="w-full h-3 overflow-hidden"
-          style={{
-            background: 'repeating-linear-gradient(-45deg, #f0b429, #f0b429 10px, #1a1510 10px, #1a1510 20px)',
-          }}
-        />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Left: Logo + Branding */}
-          <div className="flex items-center gap-3">
-            <img src="/images/DogeEscape-logo.png" alt="DogeEscape" className="w-8 h-8 object-contain" />
-            <span className="font-heading text-sm md:text-base text-doge-gold tracking-wider font-pixel">DOGEESCAPE</span>
-          </div>
-
-          {/* Center: Nav Links */}
-          <div className="flex items-center gap-4 sm:gap-8">
-            {[
-              { label: 'HOME', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-              { label: 'LEADERBOARD', action: () => document.getElementById('leaderboard')?.scrollIntoView({ behavior: 'smooth' }) },
-              { label: 'MARKETPLACE', action: () => document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth' }) },
-              { label: 'COMPANIONS', action: () => document.getElementById('companions')?.scrollIntoView({ behavior: 'smooth' }) },
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={item.action}
-                className="font-heading text-[10px] sm:text-xs text-doge-stone hover:text-doge-gold tracking-wider transition-colors duration-200"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Right: Copyright */}
-          <p className="text-[10px] sm:text-xs text-doge-stone/60">
-            © 2026 Doge Escape. Powered by <span className="text-doge-gold/80">DogeOS</span>
+        <div className="text-center lg:text-left">
+          <p className="font-pixel-display text-xs tracking-widest text-primary">
+            OFFICIAL TEASER
+          </p>
+          <h2 className="mx-auto mt-4 max-w-[20rem] font-pixel-display text-[15px] leading-relaxed text-foreground min-[420px]:text-xl sm:max-w-none sm:text-3xl lg:mx-0">
+            CAN YOU ESCAPE...
+            <br />
+            <span className="text-primary">AND SECURE THE DOGE?</span>
+          </h2>
+          <p className="font-pixel-body mx-auto mt-5 max-w-[20rem] text-lg leading-snug text-foreground/80 sm:max-w-md sm:text-xl lg:mx-0">
+            Enemies everywhere. Coins calling.
+            <br />
+            Only one mission — escape & secure the Doge!
           </p>
         </div>
-      </footer>
+      </div>
+    </section>
+  );
+}
+
+const features = [
+  { img: cardFast, title: "FAST & ADDICTIVE", body: "Quick runs, non-stop action. Perfect for short sessions." },
+  { img: cardEnemies, title: "EPIC ENEMIES", body: "Face crazy foes and chaotic bosses." },
+  { img: cardCoins, title: "COLLECT & UPGRADE", body: "Stack coins, upgrade weapons, and become unstoppable." },
+  { img: cardDogeos, title: "BUILT FOR DOGEOS", body: "Native. Fast. Fun. Made for the Doge community." },
+];
+
+function Features() {
+  return (
+    <section id="features" className="relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 sm:py-16">
+      <SectionThreeScene variant="features" className="z-0 opacity-50 mix-blend-screen" />
+      <div className="relative z-10 mb-10 text-center">
+        <h2 className="font-pixel text-2xl leading-tight tracking-tight min-[380px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+          <span className="text-white">GAME </span>
+          <span className="bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text text-transparent">FEATURES</span>
+        </h2>
+      </div>
+      <div className="relative z-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {features.map((f) => (
+          <article
+            key={f.title}
+            className="premium-hover pixel-card overflow-hidden rounded-sm p-3"
+          >
+            <div className="overflow-hidden rounded-sm border-2 border-primary/30">
+              <img
+                src={f.img}
+                alt={f.title}
+                className="h-64 w-full object-cover object-top min-[420px]:h-72 sm:h-64 md:h-72 lg:h-44"
+              />
+            </div>
+            <h3 className="mt-5 text-center font-pixel-display text-xs text-primary">
+              {f.title}
+            </h3>
+            <p className="font-pixel-body mt-3 text-center text-lg text-foreground/75">
+              {f.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function FlowStep({ icon, title, color, desc }) {
+  return (
+    <div className="premium-hover relative rounded-sm p-2">
+      <div className={`flex justify-center pt-3 ${color}`}>{icon}</div>
+      <div className={`mt-2 text-center text-sm font-black uppercase tracking-wider ${color}`}>{title}</div>
+      <div className="mt-1 text-center text-[11px] leading-tight text-yellow-100/60">{desc}</div>
     </div>
   );
-};
+}
+
+function ZGCard({ color, icon, title, subtitle, desc }) {
+  const c = zgColorMap[color];
+  return (
+    <div className={`premium-hover flex flex-col items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 text-center sm:flex-row sm:items-start sm:text-left ${c.border} ${c.bg} ${c.glow}`}>
+      <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border font-pixel text-xl sm:h-20 sm:w-20 ${c.icon}`}>{icon}</div>
+      <div className="min-w-0">
+        <h4 className={`flex flex-wrap items-center justify-center gap-2 break-words font-pixel text-base uppercase sm:justify-start sm:text-xl ${c.title}`}>{title}</h4>
+        <div className="mt-1 text-xs font-bold uppercase tracking-widest text-white/80">{subtitle}</div>
+        <p className="mt-2 text-sm leading-relaxed text-yellow-100/60">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function ZeroGSection() {
+  return (
+    <section id="zero-g" className="relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 sm:py-20 md:px-12 md:py-24">
+      <SectionThreeScene variant="zeroG" className="z-0 opacity-55 mix-blend-screen" />
+      <div className="relative z-10">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+          <div className="text-center lg:text-left">
+            <span className="inline-flex items-center justify-center gap-2 rounded-md border border-yellow-400/40 bg-black/60 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-yellow-300 sm:text-[11px] sm:tracking-[0.3em]">
+              Built On <OGLogo className="h-5 w-auto" />
+            </span>
+            <h2 className="mt-6 font-pixel text-2xl leading-[1.15] tracking-tight min-[380px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+              <div className="text-white drop-shadow-[0_0_24px_rgba(255,255,255,0.22)]">AI POWERED</div>
+              <div className="flex flex-wrap items-center justify-center gap-3 text-yellow-300 drop-shadow-[0_0_24px_rgba(255,200,0,0.26)] sm:gap-4 lg:justify-start">
+                <span>BY</span>
+                <OGLogo className="h-[0.78em] w-auto" />
+              </div>
+            </h2>
+            <p className="mt-6 text-sm font-black uppercase tracking-wider text-white sm:text-lg">
+              Your doge doesn't just run. <span className="text-yellow-400">It learns.</span>
+            </p>
+            <p className="mx-auto mt-3 max-w-lg text-yellow-100/70 lg:mx-0">
+              Doge Escape uses <span className="inline-flex items-center gap-1 font-bold text-purple-400"><OGLogo /> Compute</span> for AI training
+              and <span className="inline-flex items-center gap-1 font-bold text-sky-400"><OGLogo /> Storage</span> to store verified AI companion models.
+            </p>
+
+            <div className="premium-hover mt-8 rounded-2xl border border-yellow-400/30 bg-black/60 p-4 backdrop-blur sm:p-6">
+              <div className="mb-5 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-400 sm:text-[11px] sm:tracking-[0.3em]">How It Works</div>
+              <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-4">
+                <FlowStep icon={<Gamepad2 className="h-7 w-7" />} title="PLAY" color="text-yellow-400" desc="Gameplay creates behavior data." />
+                <FlowStep icon={<Brain className="h-7 w-7" />} title="TRAIN" color="text-purple-400" desc={<>AI companions learn using <span className="inline-flex items-center gap-1"><OGLogo className="h-3.5 w-auto" /> Compute.</span></>} />
+                <FlowStep icon={<Box className="h-7 w-7" />} title="STORE" color="text-sky-400" desc={<>Updated models are saved on <span className="inline-flex items-center gap-1"><OGLogo className="h-3.5 w-auto" /> Storage.</span></>} />
+                <FlowStep icon={<Check className="h-7 w-7" />} title="VERIFY" color="text-green-400" desc="Each model version gets a verified hash." />
+              </div>
+            </div>
+          </div>
+
+          <div className="premium-hover relative rounded-3xl">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.5),transparent_70%)] blur-3xl" />
+            <img src={zeroGAiDoge} alt="AI Doge Companion" className="relative h-full w-full rounded-2xl border border-purple-400/30 object-cover shadow-[0_30px_80px_rgba(168,85,247,0.4)] lg:rounded-3xl" />
+          </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-12 md:grid-cols-3">
+          <ZGCard color="purple" icon={<OGLogo className="h-12 w-auto" />} title={<><OGLogo className="h-6 w-auto" /> COMPUTE</>} subtitle="AI TRAINING" desc="Decentralized compute powering the training of smarter AI companions." />
+          <ZGCard color="blue" icon={<OGLogo className="h-12 w-auto" />} title={<><OGLogo className="h-6 w-auto" /> STORAGE</>} subtitle="MODEL STORAGE" desc="Secure, decentralized storage for AI models and training outputs." />
+          <ZGCard color="green" icon={<ShieldCheck className="h-10 w-10" />} title="VERIFIED HASHES" subtitle="TRANSPARENT AI" desc="Every AI update is linked to a verifiable hash for full transparency." />
+        </div>
+
+        <div className="mt-10 flex items-center justify-between gap-6">
+          <Crown className="hidden h-8 w-8 text-yellow-400/60 md:block" />
+          <a
+            href="https://app.0g.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="premium-cta premium-cta-primary mx-auto inline-flex min-h-12 flex-1 flex-wrap items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-yellow-300 via-yellow-500 to-amber-700 px-4 py-3 text-center text-[10px] font-black uppercase tracking-widest text-black shadow-[0_8px_30px_rgba(255,180,0,0.5)] ring-2 ring-yellow-200/60 transition sm:gap-3 sm:px-10 sm:py-4 sm:text-sm md:flex-none"
+          >
+            Learn How <OGLogo className="h-5 w-auto" /> Powers AI
+            <ChevronRight className="h-5 w-5" />
+          </a>
+          <Trophy className="hidden h-8 w-8 text-yellow-400/60 md:block" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PodiumCard({ rank, accent, name, score, wins, games, winRate, earned, reward }) {
+  const c = podiumMap[accent];
+  return (
+    <div className={`premium-hover relative rounded-2xl border-2 bg-gradient-to-b from-black/80 to-zinc-950/80 p-4 backdrop-blur sm:p-5 ${c.border} ${c.glow}`}>
+      <div className="flex min-w-0 items-center gap-3">
+        <div className={`flex h-10 w-12 items-center justify-center rounded-md bg-gradient-to-b font-pixel text-base text-black shadow-lg sm:h-12 sm:w-14 sm:text-xl ${c.badge}`}>
+          {rank}
+        </div>
+        <div className={`truncate font-pixel text-sm tracking-wider sm:text-lg md:text-xl ${c.name}`}>{name}</div>
+      </div>
+      <div className="mt-4 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4">
+        <div className={`flex aspect-square items-center justify-center rounded-xl border bg-gradient-to-br p-4 ${c.avatarBg}`}>
+          <img
+            src={iconLogo}
+            alt={`${name} avatar`}
+            width={1000}
+            height={1000}
+            loading="lazy"
+            className="h-full w-full object-contain drop-shadow-[0_0_24px_rgba(255,200,0,0.3)]"
+          />
+        </div>
+        <div className="space-y-1.5 sm:space-y-2">
+          <Row label="SCORE" value={score} accent={c.coin} />
+          <Row label="WINS" value={String(wins)} accent={c.coin} />
+          <Row label="GAMES" value={String(games)} accent={c.coin} />
+          <Row label="WIN RATE" value={winRate} accent={c.coin} />
+          <Row label="EARNED" value={`◎ ${earned}`} accent={c.coin} />
+        </div>
+      </div>
+      <div className={`mt-5 flex items-center justify-between gap-2 rounded-xl border bg-black/50 px-3 py-2.5 sm:px-4 ${c.rewardBg}`}>
+        <div className="flex min-w-0 items-center gap-2">
+          <Trophy className={`h-4 w-4 shrink-0 ${c.coin}`} />
+          <span className="font-pixel text-[9px] uppercase tracking-widest text-white/70 sm:text-[11px]">Reward</span>
+        </div>
+        <span className={`whitespace-nowrap font-pixel text-sm sm:text-base ${c.rewardText}`}>💎 {reward}</span>
+      </div>
+    </div>
+  );
+}
+
+function Row({ label, value, accent }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="font-pixel text-[8px] uppercase tracking-widest text-white/50 sm:text-[10px]">{label}</span>
+      <span className={`whitespace-nowrap font-pixel text-[10px] sm:text-sm ${accent}`}>{value}</span>
+    </div>
+  );
+}
+
+function WeeklyToppers() {
+  return (
+    <section id="leaderboard" className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-20 md:px-12 md:py-24">
+      <SectionThreeScene variant="leaderboard" className="z-0 opacity-45 mix-blend-screen" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-md border border-yellow-400/40 bg-black/60 px-3 py-1.5 font-pixel text-[9px] uppercase tracking-[0.25em] text-yellow-300 sm:text-[11px]">
+            Powered By <span className="text-yellow-400">DOGEOS</span>
+          </span>
+          <h2 className="mt-6 flex flex-wrap items-center justify-center gap-3 font-pixel text-xl leading-[1.2] min-[380px]:text-2xl sm:gap-5 sm:text-4xl md:text-6xl lg:text-7xl">
+            <Trophy className="h-7 w-7 shrink-0 text-yellow-400 drop-shadow-[0_0_20px_rgba(255,200,0,0.6)] sm:h-10 sm:w-10 md:h-14 md:w-14" />
+            <span className="text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.18)]">WEEKLY</span>
+            <span className="bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text text-transparent">TOPPERS</span>
+            <Rocket className="h-7 w-7 shrink-0 text-yellow-400 drop-shadow-[0_0_20px_rgba(255,200,0,0.6)] sm:h-10 sm:w-10 md:h-14 md:w-14" />
+          </h2>
+          <p className="font-pixel mt-5 text-xs uppercase leading-relaxed tracking-wider text-yellow-100/70 sm:text-base md:text-lg">
+            Top Players. Epic Skills. <span className="text-yellow-400">Real Rewards.</span>
+          </p>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3">
+          <PodiumCard rank={1} accent="yellow" name="DOGE MASTER" score="999,999" wins={128} games={156} winRate="82%" earned="12,500" reward="5,000" />
+          <PodiumCard rank={2} accent="purple" name="SHIBRAIDER" score="850,420" wins={96} games={128} winRate="75%" earned="8,000" reward="3,000" />
+          <PodiumCard rank={3} accent="orange" name="MOONWALKER" score="678,230" wins={75} games={112} winRate="67%" earned="5,000" reward="2,000" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AICompanion() {
+  const stats = [
+    { label: "FIREPOWER", filled: 5, total: 6, icon: Flame, color: "oklch(0.7 0.22 45)" },
+    { label: "DEFENSE", filled: 4, total: 6, icon: Shield, color: "oklch(0.7 0.18 230)" },
+    { label: "UTILITY", filled: 4, total: 6, icon: Wrench, color: "oklch(0.72 0.2 145)" },
+    { label: "LUCK", filled: 3, total: 6, icon: Sparkles, color: "oklch(0.85 0.18 85)" },
+  ];
+  const abilities = [
+    { name: "TARGET LOCK", desc: "Highlights threats and prioritizes enemies.", icon: Crosshair, color: "oklch(0.7 0.18 230)" },
+    { name: "REPAIR DRONE", desc: "Restores hull HP over time during battle.", icon: Plus, color: "oklch(0.72 0.2 145)" },
+    { name: "COIN MAGNET", desc: "Automatically collects coins nearby.", icon: Magnet, color: "oklch(0.65 0.22 310)" },
+  ];
+  return (
+    <section id="companion" className="relative mx-auto max-w-7xl overflow-hidden px-4 py-14 sm:px-6 sm:py-16">
+      <SectionThreeScene variant="ai" className="z-0 opacity-45 mix-blend-screen" />
+      <div className="relative z-10 mb-10 text-center">
+        <h2 className="font-pixel bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text text-2xl leading-tight text-transparent drop-shadow-[0_5px_0_rgba(0,0,0,0.9)] min-[380px]:text-3xl sm:text-5xl md:text-6xl">
+          AI COMPANION
+        </h2>
+        <p className="font-pixel-display mx-auto mt-5 max-w-xl text-[10px] leading-relaxed tracking-widest text-foreground/80 sm:text-sm">
+          YOUR LOYAL CO-PILOT. ALWAYS BY YOUR SIDE. <span className="text-primary">🐾</span>
+        </p>
+      </div>
+      <div className="premium-hover pixel-card relative z-10 rounded-md p-4 sm:p-6">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="premium-hover scanlines relative overflow-hidden rounded-sm border-2 border-primary/40">
+            <img src={aiCompanion} alt="AI Companion" className="aspect-[4/3] h-full w-full object-cover sm:aspect-auto" />
+            <div className="absolute bottom-2 left-2 flex max-w-[calc(100%-1rem)] items-center gap-2 rounded-sm border-2 border-[oklch(0.7_0.18_230)] bg-[oklch(0.13_0.04_255_/_0.85)] px-2 py-2 shadow-[3px_3px_0_oklch(0.13_0.04_255)] sm:bottom-3 sm:left-3 sm:max-w-[78%] sm:gap-3 sm:px-3">
+              <img src={roboD} alt="Robo-D" className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
+              <p className="font-pixel-display text-[6px] leading-relaxed text-[oklch(0.78_0.13_220)] min-[380px]:text-[7px] sm:text-[8px]">
+                "BARK DETECTED. THREATS NEUTRALIZED.<br />VICTORY PROBABILITY: 99.99% WOOF!"
+              </p>
+            </div>
+          </div>
+          <div className="premium-hover rounded-sm border-2 border-primary/40 bg-[oklch(0.14_0.04_255)] p-4 shadow-[4px_4px_0_oklch(0.1_0.04_255)] sm:p-5">
+            <div className="-mt-8 mb-4 flex justify-center sm:-mt-9">
+              <div className="btn-pixel inline-flex items-center gap-2 rounded-sm bg-primary px-3 py-2 font-pixel-display text-[8px] text-primary-foreground min-[380px]:text-[9px] sm:px-5 sm:text-[11px]">COMPANION: ROBO-D 🐾</div>
+            </div>
+            <p className="font-pixel-body text-lg leading-snug text-foreground/85">Robo-D is your AI copilot, optimized for survival. It analyzes, assists, and evolves with every run.</p>
+            <div className="my-5 h-[2px] w-full bg-primary/30" />
+            <ul className="space-y-3">
+              {stats.map((s) => (
+                <li key={s.label} className="flex items-center gap-3">
+                  <span className="grid h-7 w-7 place-items-center rounded-full border-2" style={{ borderColor: s.color, color: s.color }}><s.icon size={14} /></span>
+                  <span className="font-pixel-display flex-1 text-[8px] tracking-widest text-foreground min-[380px]:text-[9px] sm:text-[10px]">{s.label}</span>
+                  <span className="flex gap-1">
+                    {Array.from({ length: s.total }).map((_, i) => (
+                      <span key={i} className="h-3 w-3 border-2 sm:h-4 sm:w-4" style={{ borderColor: s.color, background: i < s.filled ? s.color : "transparent" }} />
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="my-5 h-[2px] w-full bg-primary/30" />
+            <p className="text-center font-pixel-display text-[10px] tracking-widest text-primary">
+              ACTIVE ABILITIES
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {abilities.map(({ name, desc, icon: Icon, color }) => (
+                <div
+                  key={name}
+                  className="premium-hover rounded-sm border-2 bg-[oklch(0.18_0.05_255_/_0.76)] p-3 text-center"
+                  style={{ borderColor: color }}
+                >
+                  <span className="mx-auto grid h-10 w-10 place-items-center rounded-full border-2" style={{ borderColor: color, color }}>
+                    <Icon size={18} />
+                  </span>
+                  <p className="mt-3 font-pixel-display text-[8px]" style={{ color }}>{name}</p>
+                  <p className="font-pixel-body mt-2 text-sm leading-tight text-foreground/70">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SocialLogo({ name }) {
+  if (name === "telegram") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+        <path d="M21.8 4.1 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L5.9 13.5.9 12c-1.1-.3-1.1-1.1.2-1.6L20.6 3c.9-.3 1.7.2 1.2 1.1Z" />
+      </svg>
+    );
+  }
+
+  if (name === "discord") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+        <path d="M19.5 5.2A16 16 0 0 0 15.5 4l-.5 1.1a14.8 14.8 0 0 0-6 0L8.5 4a16 16 0 0 0-4 1.2C2 8.9 1.3 12.5 1.7 16a16.2 16.2 0 0 0 5 2.5l1.1-1.8c-.6-.2-1.1-.5-1.6-.8l.4-.3a11.5 11.5 0 0 0 10.8 0l.4.3c-.5.3-1 .6-1.6.8l1.1 1.8a16.2 16.2 0 0 0 5-2.5c.5-4.1-.7-7.7-2.8-10.8ZM8.3 13.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7.4 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-current">
+      <path d="M18.9 2h3.3l-7.3 8.3L23.5 22h-6.7l-5.2-6.8L5.6 22H2.3l7.8-8.9L1.8 2h6.9l4.7 6.2L18.9 2Zm-1.2 18h1.8L7.7 3.9h-2L17.7 20Z" />
+    </svg>
+  );
+}
+
+function Footer() {
+  return (
+    <footer id="community" className="relative overflow-hidden border-t-2 border-border/60">
+      <SectionThreeScene variant="footer" className="z-0 opacity-45 mix-blend-screen" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-6 px-4 py-10 text-center sm:grid-cols-2 sm:px-6 sm:text-left lg:grid-cols-4">
+        <div className="premium-hover rounded-sm p-2">
+          <p className="font-pixel-display text-[10px] tracking-widest text-foreground/60">BUILT BY</p>
+          <img src={kultLogo} alt="Kult Games" className="mx-auto mt-3 h-10 w-auto sm:mx-0" />
+        </div>
+        <div className="premium-hover rounded-sm p-2">
+          <p className="font-pixel-display text-[10px] tracking-widest text-foreground/60">POWERED BY</p>
+          <img src={ogLogoAsset} alt="0G Labs" className="mx-auto mt-3 h-9 w-auto sm:mx-0" />
+        </div>
+        <div className="premium-hover rounded-sm p-2">
+          <p className="font-pixel-display text-[10px] tracking-widest text-foreground/60">BUILT ON</p>
+          <p className="mt-3 font-pixel-display text-lg text-foreground"><span className="text-primary">Ð</span> DogeOS</p>
+        </div>
+        <div className="premium-hover rounded-sm p-2">
+          <p className="font-pixel-display text-[10px] tracking-widest text-foreground/60">FOLLOW US</p>
+          <div className="mt-3 flex justify-center gap-3 sm:justify-start">
+            {[
+              { name: "telegram", href: "https://t.me/KultGamesOfficial", label: "Telegram" },
+              { name: "discord", href: "https://discord.com/invite/Cge7rrCyUB", label: "Discord" },
+              { name: "x", href: "https://x.com/_KultGames", label: "X" },
+            ].map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="premium-hover grid h-10 w-10 place-items-center rounded-sm border-2 border-border bg-card text-foreground/80 transition hover:border-primary hover:text-primary"
+              >
+                <SocialLogo name={social.name} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <p className="relative z-10 px-4 pb-8 text-center font-pixel-display text-[8px] leading-relaxed text-foreground/50 sm:text-[9px]">© 2026 KULT GAMES. ALL RIGHTS RESERVED.</p>
+    </footer>
+  );
+}
+
+function TrailerModal({ onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-[oklch(0.02_0.01_255_/_0.86)] px-4 py-8">
+      <div className="relative w-full max-w-5xl rounded-sm border-2 border-primary bg-[oklch(0.08_0.03_260)] p-2 shadow-[6px_6px_0_oklch(0.1_0.04_255)] sm:p-4">
+        <button
+          type="button"
+          aria-label="Close trailer"
+          onClick={onClose}
+          className="clip-arcade-button font-pixel absolute -right-2 -top-2 z-10 grid h-9 w-9 place-items-center border-2 border-[oklch(0.1_0.04_255)] bg-primary text-[10px] text-primary-foreground shadow-[3px_3px_0_oklch(0.1_0.04_255)] sm:h-10 sm:w-10"
+        >
+          X
+        </button>
+        <video
+          src={dogeTrailer}
+          controls
+          autoPlay
+          playsInline
+          className="aspect-video w-full rounded-sm bg-black object-contain"
+        />
+      </div>
+    </div>
+  );
+}
+
+function LandingPage() {
+  const navigate = useNavigate();
+  const { connectWallet, isConnecting, isConnected } = useWallet();
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [waitingForWallet, setWaitingForWallet] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (isConnected) {
+      setWaitingForWallet(false);
+      navigate("/Home");
+    }
+  }, [isConnected, navigate]);
+
+  useEffect(() => {
+    const updateScrollProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const nextProgress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      setScrollProgress(Math.min(Math.max(nextProgress, 0), 1));
+    };
+
+    document.documentElement.classList.add("landing-hide-scrollbar");
+    document.body.classList.add("landing-hide-scrollbar");
+    updateScrollProgress();
+
+    window.addEventListener("scroll", updateScrollProgress, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+
+    return () => {
+      document.documentElement.classList.remove("landing-hide-scrollbar");
+      document.body.classList.remove("landing-hide-scrollbar");
+      window.removeEventListener("scroll", updateScrollProgress);
+      window.removeEventListener("resize", updateScrollProgress);
+    };
+  }, []);
+
+  const handleConnect = async () => {
+    setWaitingForWallet(true);
+    try {
+      const account = await connectWallet();
+      if (account) {
+        navigate("/Home");
+      } else {
+        window.setTimeout(() => setWaitingForWallet(false), 350);
+      }
+    } catch (error) {
+      setWaitingForWallet(false);
+      console.error("Wallet connection failed", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none fixed left-0 top-0 z-[80] h-1.5 w-full border-b border-yellow-300/70 bg-black/85 shadow-[0_0_20px_rgba(255,200,0,0.42)] sm:h-2">
+        <div
+          className="h-full origin-left bg-gradient-to-r from-yellow-100 via-yellow-400 to-amber-600 shadow-[0_0_24px_rgba(255,220,80,0.95)]"
+          style={{ transform: `scaleX(${scrollProgress})` }}
+        />
+        <img
+          src={dogeEscapeLogo}
+          alt=""
+          className="absolute -bottom-4 h-8 w-8 -translate-x-1/2 rounded-full border-2 border-yellow-300 bg-black/90 object-contain p-1 shadow-[0_0_16px_rgba(255,200,0,0.85)] sm:-bottom-5 sm:h-9 sm:w-9"
+          style={{ left: `${Math.min(Math.max(scrollProgress * 100, 2), 98)}%` }}
+        />
+      </div>
+      <Nav onConnect={handleConnect} isConnecting={isConnecting || waitingForWallet} />
+      <Hero
+        onConnect={handleConnect}
+        isConnecting={isConnecting || waitingForWallet}
+        onWatchTrailer={() => setIsTrailerOpen(true)}
+      />
+      <Marquee />
+      <Teaser />
+      <Features />
+      <AICompanion />
+      <ZeroGSection />
+      <WeeklyToppers />
+      <Footer />
+      {isTrailerOpen && <TrailerModal onClose={() => setIsTrailerOpen(false)} />}
+    </div>
+  );
+}
 
 export default LandingPage;
