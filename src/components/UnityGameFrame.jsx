@@ -11,18 +11,18 @@ const UnityGameFrame = ({ isExpanded = false, onToggleExpanded }) => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `${UNITY_BUILD_URL}/Build/Game.loader.js`;
+    script.src = `${UNITY_BUILD_URL}/build2/doge.loader.js`;
     
     script.onload = () => {
       const canvas = document.querySelector("#unity-canvas");
       
       createUnityInstance(canvas, {
-        dataUrl: `${UNITY_BUILD_URL}/Build/Game.data`,
-        frameworkUrl: `${UNITY_BUILD_URL}/Build/Game.framework.js`,
-        codeUrl: `${UNITY_BUILD_URL}/Build/Game.wasm`,
+        dataUrl: `${UNITY_BUILD_URL}/build2/doge.data`,
+        frameworkUrl: `${UNITY_BUILD_URL}/build2/doge.framework.js`,
+        codeUrl: `${UNITY_BUILD_URL}/build2/doge.wasm`,
         streamingAssetsUrl: `${UNITY_BUILD_URL}/StreamingAssets`,
-        companyName: "BIG BLOCK CREW",
-        productName: "BLOCK PIXEL",
+        companyName: "Kult Games",
+        productName: "doge escape",
         productVersion: "1.0.5",
       }, (progress) => {
         setLoadingProgress(Math.round(progress * 100));
@@ -133,8 +133,8 @@ const UnityGameFrame = ({ isExpanded = false, onToggleExpanded }) => {
       {/* Unity Canvas - Fixed 960x600 */}
       <canvas 
         id="unity-canvas"
-        width="960"
-        height="600"
+        width="1152"
+        height="720"
         style={{ 
           display: 'block',
           width: '100%',
