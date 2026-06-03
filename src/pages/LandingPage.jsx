@@ -181,7 +181,7 @@ function Nav({ onConnect, isConnecting }) {
 function Hero({ onWatchTrailer, onConnect, isConnecting }) {
   return (
     <section
-      className="relative min-h-[660px] overflow-hidden bg-cover bg-[64%_top] bg-no-repeat pt-28 sm:min-h-[720px] sm:bg-top sm:pt-28 lg:min-h-[760px] lg:pt-32"
+      className="relative min-h-[660px] overflow-hidden bg-cover bg-[76%_top] bg-no-repeat pt-28 sm:min-h-[720px] sm:bg-top sm:pt-28 lg:min-h-[760px] lg:pt-32"
       style={{ backgroundImage: `url(${fullHero})` }}
     >
 
@@ -412,12 +412,28 @@ function Features() {
   );
 }
 
-function FlowStep({ icon, title, color, desc }) {
+function FlowStep({ icon, title, color, desc, stepNum, hoverBorderClass, glowClass }) {
   return (
-    <div className="premium-hover relative rounded-sm p-2">
-      <div className={`flex justify-center pt-3 ${color}`}>{icon}</div>
-      <div className={`mt-2 text-center text-sm font-black uppercase tracking-wider ${color}`}>{title}</div>
-      <div className="mt-1 text-center text-[11px] leading-tight text-yellow-100/60">{desc}</div>
+    <div className={`group relative overflow-hidden rounded-xl border border-white/5 bg-zinc-900/20 p-3.5 transition-all duration-300 hover:-translate-y-0.5 ${hoverBorderClass} hover:bg-black/40`}>
+      {/* Subtle background glow */}
+      <div className={`absolute -right-6 -bottom-6 h-14 w-14 rounded-full ${glowClass} blur-xl transition-all duration-500 group-hover:scale-125 group-hover:opacity-30 opacity-15`} />
+      
+      {/* Step number badge */}
+      <div className="absolute right-2.5 top-2.5 font-pixel text-[8px] text-white/25 tracking-widest">
+        {stepNum}
+      </div>
+
+      <div className={`flex justify-center pt-1.5 ${color} transition-transform duration-300 group-hover:scale-110`}>
+        {icon}
+      </div>
+      
+      <div className={`mt-2.5 text-center text-xs font-pixel-display uppercase tracking-wider ${color}`}>
+        {title}
+      </div>
+      
+      <div className="mt-1 text-center text-[10px] leading-relaxed text-yellow-100/60">
+        {desc}
+      </div>
     </div>
   );
 }
@@ -425,12 +441,12 @@ function FlowStep({ icon, title, color, desc }) {
 function ZGCard({ color, icon, title, subtitle, desc }) {
   const c = zgColorMap[color];
   return (
-    <div className={`premium-hover flex flex-col items-center gap-4 rounded-2xl border bg-gradient-to-br p-5 text-center sm:flex-row sm:items-start sm:text-left ${c.border} ${c.bg} ${c.glow}`}>
-      <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border font-pixel text-xl sm:h-20 sm:w-20 ${c.icon}`}>{icon}</div>
+    <div className={`premium-hover flex flex-row items-start gap-4 rounded-2xl border bg-gradient-to-br p-4 text-left transition-all duration-300 hover:-translate-y-1 ${c.border} ${c.bg} ${c.glow}`}>
+      <div className={`flex h-12 w-12 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border font-pixel text-lg sm:text-xl ${c.icon}`}>{icon}</div>
       <div className="min-w-0">
-        <h4 className={`flex flex-wrap items-center justify-center gap-2 break-words font-pixel text-base uppercase sm:justify-start sm:text-xl ${c.title}`}>{title}</h4>
-        <div className="mt-1 text-xs font-bold uppercase tracking-widest text-white/80">{subtitle}</div>
-        <p className="mt-2 text-sm leading-relaxed text-yellow-100/60">{desc}</p>
+        <h4 className={`flex flex-wrap items-center gap-2 break-words font-pixel text-sm uppercase sm:text-base ${c.title}`}>{title}</h4>
+        <div className="mt-0.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/80">{subtitle}</div>
+        <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-yellow-100/60">{desc}</p>
       </div>
     </div>
   );
@@ -443,7 +459,7 @@ function ZeroGSection() {
       <div className="relative z-10">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div className="text-center lg:text-left">
-            <span className="inline-flex items-center justify-center gap-2 rounded-md border border-yellow-400/40 bg-black/60 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-yellow-300 sm:text-[11px] sm:tracking-[0.3em]">
+            <span className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3.5 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-yellow-300 shadow-[0_0_15px_rgba(234,179,8,0.15)] sm:text-[11px] sm:tracking-[0.3em]">
               Built On <OGLogo className="h-5 w-auto" />
             </span>
             <h2 className="mt-6 font-pixel text-2xl leading-[1.15] tracking-tight min-[380px]:text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
@@ -462,12 +478,50 @@ function ZeroGSection() {
             </p>
 
             <div className="premium-hover mt-8 rounded-2xl border border-yellow-400/30 bg-black/60 p-4 backdrop-blur sm:p-6">
-              <div className="mb-5 text-[10px] font-black uppercase tracking-[0.22em] text-yellow-400 sm:text-[11px] sm:tracking-[0.3em]">How It Works</div>
-              <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-4">
-                <FlowStep icon={<Gamepad2 className="h-7 w-7" />} title="PLAY" color="text-yellow-400" desc="Gameplay creates behavior data." />
-                <FlowStep icon={<Brain className="h-7 w-7" />} title="TRAIN" color="text-purple-400" desc={<>AI companions learn using <span className="inline-flex items-center gap-1"><OGLogo className="h-3.5 w-auto" /> Compute.</span></>} />
-                <FlowStep icon={<Box className="h-7 w-7" />} title="STORE" color="text-sky-400" desc={<>Updated models are saved on <span className="inline-flex items-center gap-1"><OGLogo className="h-3.5 w-auto" /> Storage.</span></>} />
-                <FlowStep icon={<Check className="h-7 w-7" />} title="VERIFY" color="text-green-400" desc="Each model version gets a verified hash." />
+              <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="text-[10px] font-pixel-display uppercase tracking-[0.22em] text-yellow-400 sm:text-[11px] sm:tracking-[0.3em]">How It Works</div>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                  <span className="font-pixel-display text-[8px] tracking-wider text-green-400/80">PIPELINE ONLINE</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                <FlowStep 
+                  stepNum="01" 
+                  icon={<Gamepad2 className="h-5 w-5 sm:h-7 sm:w-7" />} 
+                  title="PLAY" 
+                  color="text-yellow-400" 
+                  hoverBorderClass="hover:border-yellow-400/30" 
+                  glowClass="bg-yellow-400/10" 
+                  desc="Gameplay creates behavior data." 
+                />
+                <FlowStep 
+                  stepNum="02" 
+                  icon={<Brain className="h-5 w-5 sm:h-7 sm:w-7" />} 
+                  title="TRAIN" 
+                  color="text-purple-400" 
+                  hoverBorderClass="hover:border-purple-400/30" 
+                  glowClass="bg-purple-400/10" 
+                  desc={<>AI companions learn using <span className="inline-flex items-center gap-1"><OGLogo className="h-3 w-auto" /> Compute.</span></>} 
+                />
+                <FlowStep 
+                  stepNum="03" 
+                  icon={<Box className="h-5 w-5 sm:h-7 sm:w-7" />} 
+                  title="STORE" 
+                  color="text-sky-400" 
+                  hoverBorderClass="hover:border-sky-400/30" 
+                  glowClass="bg-sky-400/10" 
+                  desc={<>Updated models are saved on <span className="inline-flex items-center gap-1"><OGLogo className="h-3 w-auto" /> Storage.</span></>} 
+                />
+                <FlowStep 
+                  stepNum="04" 
+                  icon={<Check className="h-5 w-5 sm:h-7 sm:w-7" />} 
+                  title="VERIFY" 
+                  color="text-green-400" 
+                  hoverBorderClass="hover:border-green-400/30" 
+                  glowClass="bg-green-400/10" 
+                  desc="Each model version gets a verified hash." 
+                />
               </div>
             </div>
           </div>
